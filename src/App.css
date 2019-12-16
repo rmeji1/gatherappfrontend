@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.login-screen-grid-column{
+  max-width: 450px;
+}
+
+.login-grid{
+  height: 90vh;
+  max-width: 100vw;
+}
+
+@media only screen and (max-width: 400px){
+  .homepage-header1{
+    font-size: 2em !important; 
+    font-weight: normal !important;
+    margin-bottom: 0 !important;
+    margin-top: 1.5em !important; 
+  }
+}
+
+@media only screen and (min-width: 400px){
+  .homepage-header1{
+    font-size: 4em !important; 
+    font-weight: normal !important;
+    margin-bottom: 0 !important;
+    margin-top: 3em !important; 
+  }
+}
+

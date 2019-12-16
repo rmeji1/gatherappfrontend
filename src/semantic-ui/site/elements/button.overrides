@@ -1,0 +1,11 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+.ui.primary.button {
+  box-shadow: 0px 1px @primaryColor;
+}
+
+.ui.secondary.button{
+  box-shadow: 0px 1px @secondaryColor;
+}
