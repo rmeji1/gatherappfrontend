@@ -28,7 +28,7 @@ class MobileContainer extends Component {
           as={Menu}
           animation='push'
           direction='right'
-          inverted
+          // inverted
           onHide={this.handleSidebarHide}
           vertical
           visible={sidebarOpened}

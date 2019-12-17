@@ -3,7 +3,7 @@
 *******************************/
 @primaryColor: #59bc87;
 @secondaryColor: #040345; 
+@gray: #727a85;
 
-@backgroundColor: #59bc87;
-@backgroundImage: linear-gradient(#59bc87, @backgroundColor);
+@backgroundImage: linear-gradient(gray, @gray);
 @textColor: @white;

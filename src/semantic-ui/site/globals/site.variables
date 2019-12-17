@@ -4,3 +4,5 @@
 @primaryColor: #59bc87; 
 @secondaryColor: #040345; 
 @pageBackground: #ebecf1;
+
+@grey: #727a85;

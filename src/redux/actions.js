@@ -1,4 +1,5 @@
 import * as Types from './actionTypes'
+import UserService from '../services/UserService'
 
 export const addUserId = (userId) => ({
   type: Types.ADD_USER_ID,
@@ -20,43 +21,39 @@ export const isLoginView = (isLogin) => ({
   isLogin
 })
 
-export const createNewUser = (user) => console.log(user) ||
-  async (dispatch) => {
-    try {
-      const response = await fetch('http://localhost:3000/users', { //eslint-disable-line 
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({ user })
-      })
-      if (!response.ok) throw await response.json()
-      const data = await response.json()
-      dispatch(addUserId(data.user_id))
-      dispatch(addUserToken(data.token))
-    } catch (e) {
-      console.log(e)
-      dispatch(addCreateUserErrors(e.errors))
-    }
-  }
+export const addAuthProps = (authProps) => ({
+  type: Types.ADD_AUTH_PROPS,
+  authProps
+})
 
-export const loginUser = (user) => console.log('logging user in', user) ||
-  async (dispatch) => {
-    try {
-      const response = await fetch('http://localhost:3000/login', { //eslint-disable-line 
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({ user })
-      })
-      if (!response.ok) throw await response.json()
-      const data = await response.json()
-      dispatch(addUserId(data.user_id))
-      dispatch(addUserToken(data.token))
-    } catch (e) {
-      dispatch(addCreateUserErrors(e.errors))
-    }
+export const closeSideBar =  () => ({
+  type: Types.CLOSE_SIDE_BAR
+})
+
+export const openSideBar = () => ({
+  type: Types.OPEN_SIDE_BAR
+})
+
+export const createNewUser = (user) => async function (dispatch) {
+  try {
+    const service = new UserService('http://localhost:3000/user')
+    const authProps = await service.createUser(user)
+    window.localStorage.setItem('authProps', JSON.stringify(authProps))
+    dispatch(addAuthProps(authProps))
+  } catch (e) {
+    console.log(e)
+    dispatch(addCreateUserErrors(e.errors))
   }
+}
+
+export const loginUser = (user) => async function (dispatch) {
+  try {
+    const service = new UserService('http://localhost:3000/login')
+    const authProps = await service.loginUser(user)
+    window.localStorage.setItem('authProps', JSON.stringify(authProps))
+    dispatch(addAuthProps(authProps))
+  } catch (e) {
+    console.log(e)
+    dispatch(addCreateUserErrors(['Unable to sign in, please try again.']))
+  }
+}

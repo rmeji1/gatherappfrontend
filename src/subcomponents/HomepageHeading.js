@@ -8,22 +8,18 @@ const HomepageHeading = ({ mobile, isLoginView }) => (
   <Container text>
     <Header
       as='h1'
-      content='Let us Gather.'
+      content="Let's Gather."
       inverted
       className='homepage-header1'
     />
     <Header
       as='h2'
+      className='homepage-header2'
       content='Making it convienent to link.'
       inverted
-      style={{
-        fontSize: mobile ? '1.5em' : '1.7em',
-        fontWeight: 'normal',
-        marginTop: mobile ? '0.5em' : '1.5em'
-      }}
     />
-    <Link to='/signup'><Button size='huge' secondary onClick={() => isLoginView(false)} content='Sign Up' /></Link>
-    <Link to='/login'><Button size='huge' primary onClick={() => isLoginView(true)}>Login</Button></Link>
+    <Link to='/signup'><Button size='huge' primary onClick={() => isLoginView(false)} content='Sign Up' /></Link>
+    <Link to='/login'><Button size='huge' color='grey' onClick={() => isLoginView(true)}>Login</Button></Link>
   </Container>
 )
 

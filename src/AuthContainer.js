@@ -3,7 +3,7 @@ import { createNewUser, loginUser, isLoginView } from './redux/actions'
 import { connect } from 'react-redux'
 import { Form, Grid, Header, Image, Message, Segment, Menu, Container, Responsive } from 'semantic-ui-react'
 import LoginButton from './subcomponents/LoginButton'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class AuthContainer extends Component{
   state = { //eslint-ignore-line
@@ -15,7 +15,6 @@ class AuthContainer extends Component{
   handleOnChange = (event) => this.setState({ [event.target.name]: event.target.value })
   handleIsLoginClick = (event) => this.setState({ isLogin: !this.state.isLogin })
   handleSubmit = (event) => {
-    console.log("handle sumbit")
     const {username, password } = this.state
     const {isLogin} = this.props
     const {createNewUser, loginUser} = this.props
@@ -24,10 +23,12 @@ class AuthContainer extends Component{
 
   render () {
     const { username, password } = this.state
-    const { loginErrors, isLoginView, isLogin } = this.props
+    const { loginErrors, isLoginView, isLogin, userId } = this.props
     const headerMessage = "Oops! Looks like something went wrong!"
     return (
-      <Container fluid>
+      <>
+        {userId ? <Redirect to='/dashboard' /> : null} 
+        <Container fluid>
         <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
           <Menu id='login-menu'>
             <Link to='/'><Menu.Item header content="Gather" /></Link>
@@ -79,16 +80,20 @@ class AuthContainer extends Component{
           </Grid.Column>
         </Grid>
       </Container>
+      </>
     )
   }
 
  
 }
 const mapStateToProps = (state) => {
+  const {authProps, isLogin, loginErrors } = state
   return {
-    isLogin: state.isLogin,
-    loginErrors: state.loginErrors
+    userId: authProps ? authProps.user_id : null,
+    userToken: authProps ? authProps.token : null,
+    isLogin: isLogin,
+    loginErrors: loginErrors
   }
 }
 
-export default connect(mapStateToProps, { createNewUser, isLoginView })(AuthContainer)
+export default connect(mapStateToProps, { createNewUser, loginUser, isLoginView })(AuthContainer)

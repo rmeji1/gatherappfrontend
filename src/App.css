@@ -64,3 +64,16 @@
   }
 }
 
+.rcw-widget-container  > .rcw-launcher{
+  background-color: #59BC8A;
+  top: 85vh;
+}
+
+.rcw-widget-container .rcw-conversation-container .rcw-header{
+  background-color: #59BC8A;
+}
+
+.rcw-widget-container .rcw-conversation-container .rcw-header .rcw-close-button{
+  background-color: #59BC8A;
+}
+

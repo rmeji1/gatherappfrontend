@@ -1,37 +1,28 @@
-import { ADD_USER_ID, ADD_USER_TOKEN, CREATE_USER_ERROR, IS_LOGIN } from './actionTypes'
+import * as Types from './actionTypes'
 import { combineReducers } from 'redux'
 
 const initialState = {
-  userId: window.localStorage.userId ? window.localStorage.userId : null,
-  userToken: localStorage.userToken ? localStorage.userToken : null,
+  authProps: JSON.parse(window.localStorage.getItem('authProps')),
   loginErrors: [],
-  isLogin: false
+  isLogin: false,
+  events: [],
+  isHiddenSidebar: true,
+  isNewEventModalShown: false
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
-  console.log('dispatcher calling is login')
-  
   switch (action.type) {
-    case IS_LOGIN:
+    case Types.IS_LOGIN:
       return action.isLogin
     default:
       return state
   }
 }
 
-const userId = (state = initialState.userId, action) => {
+const authProps = (state = initialState.authProps, action) => {
   switch (action.type) {
-    case ADD_USER_ID:
-      return action.userId
-    default:
-      return state
-  }
-}
-
-const userToken = (state = initialState.userToken, action) => {
-  switch (action.type) {
-    case ADD_USER_TOKEN:
-      return action.userToken
+    case Types.ADD_AUTH_PROPS:
+      return action.authProps
     default:
       return state
   }
@@ -39,16 +30,52 @@ const userToken = (state = initialState.userToken, action) => {
 
 const loginErrors = (state = initialState.loginErrors, action) => {
   switch (action.type) {
-    case CREATE_USER_ERROR:
+    case Types.CREATE_USER_ERROR:
       return action.errors
     default:
       return state
   }
 }
 
+const events = (state = initialState.events, action) => {
+  switch (action.type) {
+    case Types.SAVE_EVENTS:
+      return action.events
+    case Types.ADD_EVENT:
+      return [...state, action.event]
+    default:
+      return state
+  }
+}
+
+const isHiddenSidebar = (state = initialState.isHiddenSidebar, action) => {
+  switch (action.type){
+    case Types.CLOSE_SIDE_BAR:
+      return true
+    case Types.OPEN_SIDE_BAR:
+      return false
+    default:
+      return state
+  }
+}
+
+const isNewEventModalShown = (state = initialState.isNewEventModalShown, action) => {
+  console.log(action)
+  switch (action.type) {
+    case Types.OPEN_NEW_EVENT_MODAL:
+      return true
+    case Types.CLOSE_NEW_EVENT_MODAL:
+      return false
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  userId,
-  userToken,
   loginErrors,
-  isLogin
+  isLogin,
+  authProps,
+  events,
+  isHiddenSidebar,
+  isNewEventModalShown
 })
