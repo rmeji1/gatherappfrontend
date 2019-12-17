@@ -1,19 +1,40 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { Component } from 'react'
+import MobileEventContainer from './MobileEventContainer'
+import { fetchEventsFor } from '../redux/EventActions'
 import { connect } from 'react-redux'
-const EventContainer = ({ events }) => {
-  const { id } = useParams()
-  const event = events.find(event => parseInt(event.id) === parseInt(id))
-  return (
-    <div>
-      {event.title}
-    </div>
-  )
-}
 
-const mapStateToProps = state => {
-  return {
-    events: state.events
+export class EventContainer extends Component {
+  componentDidMount () {
+    const { events, getEvents, userId, token } = this.props
+    if (events.length === 0) {
+      getEvents(userId, token)
+    }
+  }
+
+  render () {
+    return (
+      <ResponsiveContainer>
+        Hello from event!
+      </ResponsiveContainer>
+    )
   }
 }
-export default connect(mapStateToProps)(EventContainer)
+
+const mapStateToProps = state => ({
+  events: state.events,
+  userId: state.authProps.user_id,
+  token: state.authProps.token
+})
+
+const mapDispatchToProps = dispatch => ({
+  getEvents: (userId, token) => dispatch(fetchEventsFor(userId, token))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventContainer)
+
+const ResponsiveContainer = ({ children }) => (
+  <div>
+    <MobileEventContainer>{children}</MobileEventContainer>
+    {/* <>{children}</> */}
+  </div>
+)

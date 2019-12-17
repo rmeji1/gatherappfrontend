@@ -1,9 +1,12 @@
-import React from 'react';
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { closeSideBar } from '../redux/actions'
-import { Responsive, Sidebar, Menu } from 'semantic-ui-react'
+import { closeSideBar, openSideBar } from '../redux/actions'
+import { Responsive, Sidebar, Menu, Container, Icon } from 'semantic-ui-react'
 import { openNewEventModal } from '../redux/EventActions'
+
 const MobileSideBar = ({ isHidden, dispatch, children }) => {
+  console.log('Rendering mobile side bar ')
   return (
     <Responsive
       as={Sidebar.Pushable}
@@ -24,7 +27,15 @@ const MobileSideBar = ({ isHidden, dispatch, children }) => {
         <Menu.Item onClick={() => console.log('pressed logout')} content='Log Out' />
       </Sidebar>
       <Sidebar.Pusher dimmed={!isHidden}>
-        {children}
+        <Container style={{ minHeight: '95vh' }}>
+          <Menu>
+            <Link to='/'><Menu.Item header content='Gather' /></Link>
+            <Menu.Item position='right' onClick={() => dispatch(openSideBar())}>
+              <Icon name='sidebar' />
+            </Menu.Item>
+          </Menu>
+          {children}
+        </Container>
       </Sidebar.Pusher>
     </Responsive>
   )
