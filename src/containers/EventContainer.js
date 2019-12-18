@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import MobileEventContainer from './MobileEventContainer'
+import MobileEventContainer from './mobile/MobileEventContainer'
 import { fetchEventsFor } from '../redux/EventActions'
 import { connect } from 'react-redux'
+import DesktopEventContainer from './desktop/DesktopEventContainer'
 
 export class EventContainer extends Component {
   componentDidMount () {
@@ -35,6 +36,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(EventContainer)
 const ResponsiveContainer = ({ children }) => (
   <div>
     <MobileEventContainer>{children}</MobileEventContainer>
-    {/* <>{children}</> */}
+    <DesktopEventContainer>{children}</DesktopEventContainer>
   </div>
 )

@@ -7,7 +7,9 @@ const initialState = {
   isLogin: false,
   events: [],
   isHiddenSidebar: true,
-  isNewEventModalShown: false
+  isNewEventModalShown: false,
+  yelpItems: [],
+  isContactModalHidden: true
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -49,7 +51,7 @@ const events = (state = initialState.events, action) => {
 }
 
 const isHiddenSidebar = (state = initialState.isHiddenSidebar, action) => {
-  switch (action.type){
+  switch (action.type) {
     case Types.CLOSE_SIDE_BAR:
       return true
     case Types.OPEN_SIDE_BAR:
@@ -60,11 +62,28 @@ const isHiddenSidebar = (state = initialState.isHiddenSidebar, action) => {
 }
 
 const isNewEventModalShown = (state = initialState.isNewEventModalShown, action) => {
-  console.log(action)
   switch (action.type) {
     case Types.OPEN_NEW_EVENT_MODAL:
       return true
     case Types.CLOSE_NEW_EVENT_MODAL:
+      return false
+    default:
+      return state
+  }
+}
+
+const yelpItems = (state = initialState.yelpItems, action) => {
+  switch (action.type) {
+    case Types.UPDATE_YELP_ITEMS:
+      return action.yelpItems
+    default:
+      return state
+  }
+}
+
+const isContactModalHidden = (state = initialState.isContactModalHidden, action) => {
+  switch (action.type) {
+    case Types.OPEN_ADD_CONTACT_MODAL:
       return false
     default:
       return state
@@ -77,5 +96,7 @@ export default combineReducers({
   authProps,
   events,
   isHiddenSidebar,
-  isNewEventModalShown
+  isNewEventModalShown,
+  yelpItems,
+  isContactModalHidden
 })

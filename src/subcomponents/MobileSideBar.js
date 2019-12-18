@@ -1,12 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { closeSideBar, openSideBar } from '../redux/actions'
 import { Responsive, Sidebar, Menu, Container, Icon } from 'semantic-ui-react'
 import { openNewEventModal } from '../redux/EventActions'
 
 const MobileSideBar = ({ isHidden, dispatch, children }) => {
-  console.log('Rendering mobile side bar ')
   return (
     <Responsive
       as={Sidebar.Pushable}
@@ -22,7 +21,7 @@ const MobileSideBar = ({ isHidden, dispatch, children }) => {
         inverted
         visible={!isHidden}
       >
-        <Menu.Item content='Dashboard' active />
+        <Menu.Item content='Dashboard' as={NavLink} to='/dashboard' />
         <Menu.Item content='New Gathering' onClick={() => dispatch(openNewEventModal())} />
         <Menu.Item onClick={() => console.log('pressed logout')} content='Log Out' />
       </Sidebar>

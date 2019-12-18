@@ -1,25 +1,24 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Search, Grid, Card } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Search, Grid, Card, Responsive } from 'semantic-ui-react'
 import categories from '../containers/categories.json'
 import { mapYelpToCardItems } from '../Helpers/HelpFunctions'
-const initialState = { isLoading: false, results: [], value: '', items:[] }
+import { updateYelpItemsThunk } from '../redux/EventActions'
 
-export default class SearchExampleCategory extends Component {
+const initialState = { isLoading: false, results: [], value: '' }
+
+class SearchExampleCategory extends Component {
   state = initialState
 
   handleResultSelect = (e, { result }) => {
-    this.setState({ value: result.title })
-    const offset = 0
-    const limit = 10
-    const categories = result.alias
-    const location = 'Brooklyn, NY'
-    fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`, {
-      headers: {offset, limit, categories, location}
-    })
-    .then(response => response.json())
-    .then(items => console.log(items) || this.setState({ items: mapYelpToCardItems(items)}))  
-    console.log(result)
+    if (this.state.value !== result.title){
+      this.setState({ value: result.title })
+      
+      const offset = 0
+      const location = 'Brooklyn, NY'
+      this.props.updateYelpItemsThunk(result.alias, offset, location)
+    }
   }
 
   handleSearchChange = (e, { value }) => {
@@ -43,8 +42,11 @@ export default class SearchExampleCategory extends Component {
 
     return (
       <Grid stackable centered>
-        <Grid.Column width={8} float='right'>
+        <Grid.Row centered stretched>
+        <Grid.Column >
           <Search
+            aligned='right'
+            size='large'
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
             onSearchChange={_.debounce(this.handleSearchChange, 500, {
@@ -55,10 +57,25 @@ export default class SearchExampleCategory extends Component {
             {...this.props}
           />
         </Grid.Column>
-        <Grid.Column width={8} float='left'>
-            <Card.Group items={this.state.items} />
+        <Grid.Column float='left'>
+        <Responsive getWidth={getWidth} maxWidth={Responsive.onlyTablet.minWidth} >
+          <Card.Group items={mapYelpToCardItems(this.props.items)} />
+          </Responsive>
         </Grid.Column>
+        </Grid.Row>
+       
       </Grid>
     )
   }
+}
+
+const mapStateToProps = (state) => ({
+  items: state.yelpItems
+})
+
+export default connect(mapStateToProps, { updateYelpItemsThunk })(SearchExampleCategory)
+
+const getWidth = () => {
+  const isSSR = typeof window === 'undefined'
+  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
 }

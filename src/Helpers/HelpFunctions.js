@@ -1,4 +1,6 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from 'semantic-ui-react'
 
 export const mapEventsToCardItems = (events) => events.map(event => ({
   header: event.title,
@@ -21,5 +23,6 @@ export const mapYelpToCardItems = (items) => items.map(item => ({
   image: item.image_url,
   description: item.description,
   meta: `Rating: ${item.rating}, Price: ${item.price}`,
-  fluid: true
+  fluid: true, 
+  extra: <Button floated='right' primary>Add to I.T.</Button>
 }))

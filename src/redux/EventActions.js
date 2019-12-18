@@ -37,3 +37,16 @@ export const createNewEventFor = (userId, token, event) => console.log('in here'
     const createdEvent = await service.createNewEvent(event)
     dispatch(addCreatedEvent(createdEvent))
   }
+
+export const updateYelpItems = (items) => ({
+  type: Types.UPDATE_YELP_ITEMS,
+  yelpItems: items
+})
+
+export const updateYelpItemsThunk = (categories, offset, location) =>
+  async function (dispatch) {
+    const limit = 10
+    const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`) //eslint-disable-line
+    const items = await response.json()
+    dispatch(updateYelpItems(items))
+  }

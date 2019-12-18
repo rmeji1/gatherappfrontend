@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import AuthContainer from './AuthContainer'
 import LandingContainer from './LandingContainer'
 import { Switch, Route } from 'react-router-dom'
-import PrivateRoute from './containers/PrivateRoute'
+import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/DashboardContainer'
 import EventContainer from './containers/EventContainer'
 function App ({ userId }) {

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
-import MobileSideBar from './MobileSideBar'
+import MobileSideBar from '../../subcomponents/MobileSideBar'
 import { Container, Card, Menu, Segment } from 'semantic-ui-react'
-import { mapEventToCard } from '../Helpers/HelpFunctions'
-import SearchExampleCategory from './SearchCategory'
+import { mapEventToCard } from '../../Helpers/HelpFunctions'
+import SearchExampleCategory from '../../subcomponents/SearchCategory'
 
 const EventContainer = ({ events }) => {
   const [activeItem, handleItemClick] = useState('add events')

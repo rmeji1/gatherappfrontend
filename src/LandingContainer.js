@@ -1,7 +1,7 @@
 import React from 'react'
-import DesktopContainer from './containers/DesktopContainer'
+import DesktopContainer from './containers/desktop/DesktopContainer'
 import { Header, Segment, Grid } from 'semantic-ui-react'
-import MobileContainer from './containers/ResponsiveMobileContainer'
+import MobileContainer from './containers/mobile/ResponsiveMobileContainer'
 
 const LandingContainer = () => {
   return (

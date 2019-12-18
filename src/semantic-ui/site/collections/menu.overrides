@@ -15,9 +15,16 @@
     width: calc(100% - (-1px * 2));
     max-width: calc(100% - (-1px * 2));
     box-shadow: none;
-}
+  }
 }
 
 .ui.secondary.inverted.pointing.menu{
   border: 0px;
+}
+
+.ui.menu .active.item {
+  background: rgba(0, 0, 0, 0.05);
+  color: darkslategrey;
+  font-weight: normal;
+  box-shadow: none;
 }

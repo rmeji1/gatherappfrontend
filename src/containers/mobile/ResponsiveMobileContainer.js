@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {Responsive, Sidebar, Menu, Segment, Container, Button, Icon} from 'semantic-ui-react'
-import HomepageHeading from '../subcomponents/HomepageHeading'
+import {Responsive, Sidebar, Menu, Segment, Container, Icon} from 'semantic-ui-react'
+import HomepageHeading from '../../subcomponents/HomepageHeading'
 import { Link } from 'react-router-dom'
 const getWidth = () => {
   const isSSR = typeof window === 'undefined'

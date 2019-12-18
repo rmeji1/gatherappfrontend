@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Responsive, Visibility, Segment, Menu, Container } from 'semantic-ui-react' 
-import HomepageHeading from '../subcomponents/HomepageHeading'
+import HomepageHeading from '../../subcomponents/HomepageHeading'
 
 class DesktopContainer extends Component {
   state = {}

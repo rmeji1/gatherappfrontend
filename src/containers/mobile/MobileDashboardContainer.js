@@ -1,13 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Menu, Container, Icon, Grid, Button, Card, Modal, Form } from 'semantic-ui-react'
+import { Grid, Button, Card, Modal, Form } from 'semantic-ui-react'
 import { Widget } from 'react-chat-widget'
-import { createNewEventFor, closeNewEventModal } from '../redux/EventActions'
-import { openSideBar, closeSideBar } from '../redux/actions'
+import { createNewEventFor, closeNewEventModal } from '../../redux/EventActions'
+import { openSideBar, closeSideBar } from '../../redux/actions'
 import 'react-chat-widget/lib/styles.css'
 import { connect } from 'react-redux'
-import MobileSideBar from './MobileSideBar'
-import { mapEventsToCardItems } from '../Helpers/HelpFunctions'
+import MobileSideBar from '../../subcomponents/MobileSideBar'
+import { mapEventsToCardItems } from '../../Helpers/HelpFunctions'
 
 class MobileDashboardContainer extends React.Component {
   state = {
@@ -15,20 +14,18 @@ class MobileDashboardContainer extends React.Component {
     description: ''
   }
 
-  setHiddenSidebar = (isHiddenSidebar) => this.setState({ isHiddenSidebar })
   handleChange = (event) => this.setState({ [event.target.name]: event.target.value })
-  handlGatherSubmission = (event) => {
-    const { userId, token, createNewEventFor, closeNewEventModal } = this.props
+  handlGatherSubmission = () => {
+    const { userId, token, closeNewEventModal, createNewEventFor } = this.props.props
     const { title, description } = this.state
-    this.props.closeNewEventModal()
-    this.props.createNewEventFor(userId, token, { title, description })
+    closeNewEventModal()
+    createNewEventFor(userId, token, { title, description })
     this.setState({ title: '', description: '' })
   }
   
   render() {
-    const { items } = this
     const { title, description } = this.state
-    const { events, openSideBar, closeNewEventModal } = this.props
+    const { events, closeNewEventModal } = this.props.props
     return (
       <MobileSideBar>
         <Grid columns={2} stackable>
@@ -37,7 +34,7 @@ class MobileDashboardContainer extends React.Component {
           </Grid.Column>
         </Grid>
         <Widget fullScreenMode={false} />
-        <Modal size='fullscreen' open={this.props.isNewEventModalShown}>
+        <Modal size='fullscreen' open={this.props.props.isNewEventModalShown}>
           <Modal.Header>New Gathering</Modal.Header>
           <Modal.Content>
             <Form>
@@ -61,10 +58,10 @@ class MobileDashboardContainer extends React.Component {
           <Modal.Actions>
             <Button color='red' onClick={() => closeNewEventModal()}>
               Cancel
-                </Button>
+            </Button>
             <Button primary onClick={this.handlGatherSubmission}>
               Create
-                </Button>
+            </Button>
           </Modal.Actions>
         </Modal>
       </MobileSideBar>
@@ -72,24 +69,4 @@ class MobileDashboardContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    userId: state.authProps.user_id,
-    token: state.authProps.token,
-    events: state.events,
-    isNewEventModalShown: state.isNewEventModalShown
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    createNewEventFor: (userId, token, event) => dispatch(createNewEventFor(userId, token, event)),
-    openSideBar: () => dispatch(openSideBar()),
-    closeSideBar: () => dispatch(closeSideBar()),
-    closeNewEventModal: () => {
-      dispatch(closeNewEventModal())
-      dispatch(closeSideBar())
-    }
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(MobileDashboardContainer)
+export default MobileDashboardContainer
