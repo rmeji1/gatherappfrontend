@@ -1,23 +1,17 @@
 import React from 'react'
-import MobileDashboardContainer from './mobile/MobileDashboardContainer'
+import MobileDashboardContainer from '../mobile/MobileDashboardContainer'
 import { connect } from 'react-redux'
-import DesktopDashboardContainer from './desktop/DesktopDashboardContainer'
-import { createNewEventFor, closeNewEventModal, fetchEventsFor } from '../redux/EventActions'
-import { openSideBar, closeSideBar } from '../redux/actions'
-import { showUser } from '../redux/userActionCreator'
-import { addContactRemote, closeAddContactModal } from '../redux/ContactActions'
+import DesktopDashboardContainer from '../desktop/DesktopDashboardContainer'
+import { createNewEventFor, closeNewEventModal, fetchEventsFor } from '../../redux/EventActions'
+import { openSideBar, closeSideBar } from '../../redux/actions'
+import { addContactRemote, closeAddContactModal } from '../../redux/ContactActions'
 
 class DashboardContainer extends React.Component {
   componentDidMount () {
     this.props.fetchEventsFor(this.props.userId, this.props.token)
-    this.props.showUser(this.props.userId, this.props.token)
   }
 
-  render () {
-    return (
-      <ResponsiveContainer props={this.props} />
-    )
-  }
+  render = () => <ResponsiveContainer {...this.props} />
 }
 
 const mapStateToProps = (state) => {
@@ -41,7 +35,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(closeSideBar())
     },
     fetchEventsFor: (userId, token) => dispatch(fetchEventsFor(userId, token)),
-    showUser: (userId, token) => dispatch(showUser(userId, token)),
     addContactRemote: (userId, ownerId, token) => dispatch(addContactRemote(userId, ownerId, token)),
     closeAddContactModal: () => dispatch(closeAddContactModal())
   }
@@ -50,7 +43,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)
 
 const ResponsiveContainer = (props) => (
   <div>
-    <MobileDashboardContainer props={props.props} />
-    <DesktopDashboardContainer props={props.props} />
+    <MobileDashboardContainer {...props} />
+    <DesktopDashboardContainer  {...props} />
   </div>
 )

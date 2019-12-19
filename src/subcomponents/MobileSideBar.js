@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { closeSideBar, openSideBar } from '../redux/actions'
 import { Responsive, Sidebar, Menu, Container, Icon } from 'semantic-ui-react'
 import { openNewEventModal } from '../redux/EventActions'
+import { openAddContactModal } from '../redux/ContactActions'
 
 const MobileSideBar = ({ isHidden, dispatch, children }) => {
   return (
@@ -23,6 +24,8 @@ const MobileSideBar = ({ isHidden, dispatch, children }) => {
       >
         <Menu.Item content='Dashboard' as={NavLink} to='/dashboard' />
         <Menu.Item content='New Gathering' onClick={() => dispatch(openNewEventModal())} />
+        <Menu.Item name='my contacts' onClick={() => dispatch(openAddContactModal())} />
+
         <Menu.Item onClick={() => console.log('pressed logout')} content='Log Out' />
       </Sidebar>
       <Sidebar.Pusher dimmed={!isHidden}>

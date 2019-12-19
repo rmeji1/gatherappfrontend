@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, Search } from 'semantic-ui-react'
+import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 
 const initialState = { isLoading: false, results: [], value: '' }
@@ -19,7 +19,6 @@ export class SearchForUsers extends Component {
   }
 
   handleSearchChange = (e, { value }) => {
-    console.log(this.props.user)
     this.setState({ isLoading: true, value })
     setTimeout(async () => {
       const response = await fetch(`http://localhost:3000/users?query=${value}`, { headers: { "Authorization": this.props.token } })
@@ -44,11 +43,9 @@ export class SearchForUsers extends Component {
         })}
         results={results}
         value={value}
-        {...this.props}
       />
     )
   }
 }
-
 
 export default connect((state) => ({ token: state.authProps.token, user: state.user }))(SearchForUsers)

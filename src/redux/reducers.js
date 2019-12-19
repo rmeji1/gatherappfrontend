@@ -96,7 +96,6 @@ const isContactModalHidden = (state = initialState.isContactModalHidden, action)
 }
 
 const user = (state = initialState.user, action) => {
-  console.log(state, action.user)
   switch (action.type) {
     case Types.SHOW_USER:
       return action.user

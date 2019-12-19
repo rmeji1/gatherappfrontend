@@ -1,12 +1,11 @@
 import React from 'react'
-import { Grid, Button, Card, Modal, Form } from 'semantic-ui-react'
+import { Grid, Card } from 'semantic-ui-react'
 import { Widget } from 'react-chat-widget'
-import { createNewEventFor, closeNewEventModal } from '../../redux/EventActions'
-import { openSideBar, closeSideBar } from '../../redux/actions'
 import 'react-chat-widget/lib/styles.css'
-import { connect } from 'react-redux'
 import MobileSideBar from '../../subcomponents/MobileSideBar'
 import { mapEventsToCardItems } from '../../Helpers/HelpFunctions'
+import NewEventModal from '../modals/NewEventModal'
+import MyContactsModal from '../modals/MyContactsModal'
 
 class MobileDashboardContainer extends React.Component {
   state = {
@@ -15,17 +14,27 @@ class MobileDashboardContainer extends React.Component {
   }
 
   handleChange = (event) => this.setState({ [event.target.name]: event.target.value })
-  handlGatherSubmission = () => {
-    const { userId, token, closeNewEventModal, createNewEventFor } = this.props.props
+  handleGatherSubmission = () => {
+    const { userId, token } = this.props
     const { title, description } = this.state
-    closeNewEventModal()
-    createNewEventFor(userId, token, { title, description })
+    this.props.closeNewEventModal()
+    this.props.createNewEventFor(userId, token, { title, description })
     this.setState({ title: '', description: '' })
   }
-  
-  render() {
+
+  contactsIfNullOrEmpty = () => {
+    if (this.props.user) {
+      if (this.props.user.contacts.length !== 0) {
+        return this.props.user.contacts.map(contact => ({ header: contact.username }))
+      }
+    }
+    return [{ header: 'Please use search to add...' }]
+  }
+
+  render () {
     const { title, description } = this.state
-    const { events, closeNewEventModal } = this.props.props
+    const { events, isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote } = this.props
+
     return (
       <MobileSideBar>
         <Grid columns={2} stackable>
@@ -34,36 +43,22 @@ class MobileDashboardContainer extends React.Component {
           </Grid.Column>
         </Grid>
         <Widget fullScreenMode={false} />
-        <Modal size='fullscreen' open={this.props.props.isNewEventModalShown}>
-          <Modal.Header>New Gathering</Modal.Header>
-          <Modal.Content>
-            <Form>
-              <Form.Input
-                fluid
-                label='Title'
-                placeholder='Enter title'
-                value={title}
-                name='title'
-                onChange={this.handleChange}
-              />
-              <Form.TextArea
-                label='Description'
-                name='description'
-                placeholder='Enter description'
-                value={description}
-                onChange={this.handleChange}
-              />
-            </Form>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button color='red' onClick={() => closeNewEventModal()}>
-              Cancel
-            </Button>
-            <Button primary onClick={this.handlGatherSubmission}>
-              Create
-            </Button>
-          </Modal.Actions>
-        </Modal>
+        <NewEventModal
+          isNewEventModalShown={isNewEventModalShown}
+          title={title}
+          description={description}
+          closeNewEventModal={closeNewEventModal}
+          onHandleChange={this.handleChange}
+          onHandleGatherSubmission={this.handleGatherSubmission}
+        />
+        <MyContactsModal
+          isContactModalHidden={isContactModalHidden}
+          addContactRemote={addContactRemote}
+          contacts={this.contactsIfNullOrEmpty()}
+          closeAddContactModal={closeAddContactModal}
+        />
+        <MyContactsModal isContactModalHidden={isContactModalHidden} addContactRemote={addContactRemote} contacts={this.contactsIfNullOrEmpty()} closeAddContactModal={closeAddContactModal} />
+
       </MobileSideBar>
     )
   }

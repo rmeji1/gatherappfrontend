@@ -46,14 +46,14 @@ class SearchExampleCategory extends Component {
             <Search
               size={this.props.size}
               loading={isLoading}
-              onResultSelect={this.handleResultSelect}
+              onResultSelect={(event, result) => this.handleResultSelect(event, result)}
               onSearchChange={_.debounce(this.handleSearchChange, 500, {
                 leading: true
               })}
               results={results}
               value={value}
-              {...this.props}
             />
+            {/*...this.props https://reactjs.org/warnings/unknown-prop.html*/}
           </Grid.Column>
           <Grid.Column float='left'>
             <Responsive getWidth={getWidth} maxWidth={430}>
@@ -75,7 +75,10 @@ const mapStateToProps = (state, ownProps) => ({
   items: state.yelpItems
 })
 
-export default connect(mapStateToProps, { updateYelpItemsThunk })(SearchExampleCategory)
+const mapDispatchToProps = (dispatch) => ({
+  updateYelpItemsThunk: (value, offset, location) => dispatch(updateYelpItemsThunk(value, offset, location))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(SearchExampleCategory)
 
 const getWidth = () => {
   const isSSR = typeof window === 'undefined'
