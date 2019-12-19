@@ -10,7 +10,8 @@ const initialState = {
   isNewEventModalShown: false,
   yelpItems: [],
   isContactModalHidden: true,
-  user: null
+  user: null,
+  activePage: 1
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -109,6 +110,14 @@ const user = (state = initialState.user, action) => {
   }
 }
 
+const activePage = (state = initialState.activePage, action) => {
+  switch (action.type) {
+    case Types.CHANGE_EVENTS_ACTIVE_PAGE:
+      return action.activePage
+    default:
+      return state
+  }
+}
 export default combineReducers({
   loginErrors,
   isLogin,
@@ -118,5 +127,6 @@ export default combineReducers({
   isNewEventModalShown,
   yelpItems,
   isContactModalHidden,
-  user
+  user,
+  activePage
 })

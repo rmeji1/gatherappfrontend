@@ -6,17 +6,24 @@ import categories from '../containers/categories.json'
 import { mapYelpToCardItems } from '../Helpers/HelpFunctions'
 import { updateYelpItemsThunk } from '../redux/EventActions'
 
-const initialState = { isLoading: false, results: [], value: '' }
+const initialState = { isLoading: false, results: [], value: '', alias: '' }
 
 class SearchExampleCategory extends Component {
   state = initialState // eslint-disable-line
 
-  handleResultSelect = (e, { result }) => {
-    if (this.state.value !== result.title) {
-      this.setState({ value: result.title })
-      const offset = 0
+  componentDidUpdate (prevProps, prevState) {
+    if (this.props.activePage !== prevProps.activePage) {
       const location = 'Brooklyn, NY'
-      this.props.updateYelpItemsThunk(result.alias, offset, location)
+      console.log(this.state.value)
+      this.props.updateYelpItemsThunk(this.state.alias, (this.props.activePage - 1) * 10, location)
+    }
+  }
+
+  handleResultSelect = (e, { result }) => {
+    if (this.state.value !== result.alias) {
+      this.setState({ value: result.title, alias: result.alias })
+      const location = 'Brooklyn, NY'
+      this.props.updateYelpItemsThunk(result.alias, (this.props.activePage - 1) * 10, location)
     }
   }
 
@@ -72,7 +79,8 @@ class SearchExampleCategory extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
-  items: state.yelpItems
+  items: state.yelpItems,
+  activePage: state.activePage
 })
 
 const mapDispatchToProps = (dispatch) => ({

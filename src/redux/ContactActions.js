@@ -13,7 +13,7 @@ export const closeAddContactModal = () => ({
   type: Type.CLOSE_ADD_CONTACT_MODAL
 })
 
-export const addContactRemote = (userId, ownerId, token) =>
+export const addContactRemote = (userId, ownerId, token) => console.log(userId, ownerId, token) ||
   async function (dispatch) {
     const response = await fetch(`http://localhost:3000/contacts`, { //eslint-disable-line 
       method: 'POST',

@@ -48,6 +48,8 @@ export class DesktopDashboardContainer extends Component {
           addContactRemote={addContactRemote}
           contacts={this.contactsIfNullOrEmpty()}
           closeAddContactModal={closeAddContactModal}
+          userId={this.props.userId}
+          token={this.props.token}
         />
       </DesktopMenuContainer>
     )

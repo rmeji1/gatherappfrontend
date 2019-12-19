@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 
@@ -10,6 +9,7 @@ export class SearchForUsers extends Component {
 
   handleResultSelect = (event, { result, value }) => {
     this.setState({ value: result.title, isLoading: true })
+    console.log(this.props)
     try {
       this.props.addContactRemote(result.id)
       this.setState({ isLoading: false, value: '' })
@@ -21,12 +21,12 @@ export class SearchForUsers extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
     setTimeout(async () => {
-      const response = await fetch(`http://localhost:3000/users?query=${value}`, { headers: { "Authorization": this.props.token } })
+      const response = await fetch(`http://localhost:3000/users?query=${value}`, { headers: { Authorization: this.props.token } }) //eslint-disable-line
       const results = await response.json()
       const contacts = this.props.user.contacts.map((contact) => contact.id)
       const mappedResults = results.filter((result) => result.id !== this.props.user.id && !contacts.includes(result.id)).map((result) => ({ title: result.username, id: result.id }))
       this.setState({ isLoading: false, results: mappedResults })
-    }, 300)
+    }, 1000)
   }
 
   render () {
@@ -39,7 +39,7 @@ export class SearchForUsers extends Component {
         loading={isLoading}
         onResultSelect={this.handleResultSelect}
         onSearchChange={_.debounce(this.handleSearchChange, 500, {
-          leading: true,
+          leading: true
         })}
         results={results}
         value={value}
@@ -48,4 +48,4 @@ export class SearchForUsers extends Component {
   }
 }
 
-export default connect((state) => ({ token: state.authProps.token, user: state.user }))(SearchForUsers)
+export default SearchForUsers

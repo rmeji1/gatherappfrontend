@@ -48,5 +48,10 @@ export const updateYelpItemsThunk = (categories, offset, location) =>
     const limit = 10
     const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`) //eslint-disable-line
     const items = await response.json()
-    dispatch(updateYelpItems(items))
+    dispatch(updateYelpItems(items.businesses))
   }
+
+export const changeActivePageTo = (activePage) => ({
+  type: Types.CHANGE_EVENTS_ACTIVE_PAGE,
+  activePage
+})

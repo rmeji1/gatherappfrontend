@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import MobileEventContainer from '../mobile/MobileEventContainer'
-import { fetchEventsFor } from '../../redux/EventActions'
+import { fetchEventsFor, changeActivePageTo } from '../../redux/EventActions'
 import { connect } from 'react-redux'
 import DesktopEventContainer from '../desktop/DesktopEventContainer'
 import { withRouter } from 'react-router-dom'
@@ -18,11 +18,13 @@ const mapStateToProps = state => ({
   userId: state.authProps.user_id,
   token: state.authProps.token,
   yelpItems: state.yelpItems,
-  contacts: state.user ? state.user.contacts : []
+  contacts: state.user ? state.user.contacts : [],
+  activePage: state.activePage
 })
 
 const mapDispatchToProps = dispatch => ({
-  getEvents: (userId, token) => dispatch(fetchEventsFor(userId, token))
+  getEvents: (userId, token) => dispatch(fetchEventsFor(userId, token)),
+  changeActivePageTo: (newPage) => dispatch(changeActivePageTo(newPage))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventContainer))

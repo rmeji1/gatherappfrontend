@@ -1,10 +1,14 @@
 import React from 'react'
-import { Responsive } from 'semantic-ui-react'
+import { Responsive, Pagination, Grid } from 'semantic-ui-react'
 import DesktopMenuContainer from '../../subcomponents/DesktopMenuContainer'
 import { mapEventToCard } from '../../Helpers/HelpFunctions'
 import { OnlyTabletGrid } from '../tablet/OnlyTabletGrid'
 import { OnlyDesktopGrid } from './OnlyDesktopGrid'
 
+const onPageChange = (event, { activePage }, changeActivePageTo) => {
+  changeActivePageTo(activePage)
+  console.log(activePage)
+}
 const DesktopEventContainer = (props) => {
   const { id } = props.match.params
   const { events, contacts, yelpItems } = props
@@ -14,6 +18,21 @@ const DesktopEventContainer = (props) => {
 
   return (
     <DesktopMenuContainer>
+      <Grid centered>
+        <Grid.Column verticalAlign='middle' width={8}>
+          <Pagination
+            boundaryRange={0}
+            defaultActivePage={1}
+            ellipsisItem={null}
+            firstItem={null}
+            lastItem={null}
+            siblingRange={1}
+            totalPages={10}
+            onPageChange={(event, data) => onPageChange(event, data, props.changeActivePageTo)}
+          />
+        </Grid.Column>
+      </Grid>
+
       <Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
         <OnlyTabletGrid
           cardInfo={cardInfo}
