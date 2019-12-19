@@ -1,17 +1,16 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import MobileEventContainer from '../mobile/MobileEventContainer'
 import { fetchEventsFor } from '../../redux/EventActions'
 import { connect } from 'react-redux'
 import DesktopEventContainer from '../desktop/DesktopEventContainer'
 import { withRouter } from 'react-router-dom'
 
-export class EventContainer extends Component {
-  componentDidMount () {
-    const { events, getEvents, userId, token } = this.props
-    if (events.length === 0) getEvents(userId, token)
-  }
-
-  render = () => <ResponsiveContainer {...this.props} />
+const EventContainer = (props) => {
+  useEffect(() => {
+    const { getEvents, userId, token } = props
+    getEvents(userId, token)
+  }, [props.events.length])
+  return <ResponsiveContainer {...props} />
 }
 
 const mapStateToProps = state => ({

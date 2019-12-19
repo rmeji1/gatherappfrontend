@@ -24,7 +24,7 @@ class MobileDashboardContainer extends React.Component {
 
   contactsIfNullOrEmpty = () => {
     if (this.props.user) {
-      if (this.props.user.contacts.length !== 0) {
+      if (this.props.user.contacts && this.props.user.contacts.length !== 0) {
         return this.props.user.contacts.map(contact => ({ header: contact.username }))
       }
     }

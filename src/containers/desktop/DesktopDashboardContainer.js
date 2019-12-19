@@ -22,7 +22,7 @@ export class DesktopDashboardContainer extends Component {
 
   contactsIfNullOrEmpty = () => {
     if (this.props.user) {
-      if (this.props.user.contacts.length !== 0) {
+      if (this.props.user.contacts && this.props.user.contacts.length !== 0) {
         return this.props.user.contacts.map(contact => ({ header: contact.username }))
       }
     }
@@ -43,7 +43,12 @@ export class DesktopDashboardContainer extends Component {
           onHandleChange={this.handleChange}
           onHandleGatherSubmission={this.handleGatherSubmission}
         />
-        <MyContactsModal isContactModalHidden={isContactModalHidden} addContactRemote={addContactRemote} contacts={this.contactsIfNullOrEmpty()} closeAddContactModal={closeAddContactModal} />
+        <MyContactsModal
+          isContactModalHidden={isContactModalHidden}
+          addContactRemote={addContactRemote}
+          contacts={this.contactsIfNullOrEmpty()}
+          closeAddContactModal={closeAddContactModal}
+        />
       </DesktopMenuContainer>
     )
   }
