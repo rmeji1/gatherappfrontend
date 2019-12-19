@@ -9,7 +9,8 @@ const initialState = {
   isHiddenSidebar: true,
   isNewEventModalShown: false,
   yelpItems: [],
-  isContactModalHidden: true
+  isContactModalHidden: true,
+  user: null
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -45,6 +46,8 @@ const events = (state = initialState.events, action) => {
       return action.events
     case Types.ADD_EVENT:
       return [...state, action.event]
+    case Types.INVITE_USER:
+      return state.map(event => event.id === action.invite.event.id ? action.invite.event : event) 
     default:
       return state
   }
@@ -85,6 +88,23 @@ const isContactModalHidden = (state = initialState.isContactModalHidden, action)
   switch (action.type) {
     case Types.OPEN_ADD_CONTACT_MODAL:
       return false
+    case Types.CLOSE_ADD_CONTACT_MODAL:
+      return true
+    default:
+      return state
+  }
+}
+
+const user = (state = initialState.user, action) => {
+  console.log(state, action.user)
+  switch (action.type) {
+    case Types.SHOW_USER:
+      return action.user
+    case Types.ADD_CONTACT:
+      return {
+        ...state,
+        contacts: [...state.contacts, action.contact]
+      }
     default:
       return state
   }
@@ -98,5 +118,6 @@ export default combineReducers({
   isHiddenSidebar,
   isNewEventModalShown,
   yelpItems,
-  isContactModalHidden
+  isContactModalHidden,
+  user
 })

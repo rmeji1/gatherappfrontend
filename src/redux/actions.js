@@ -1,5 +1,6 @@
 import * as Types from './actionTypes'
 import UserService from '../services/UserService'
+import { InviteService } from '../services/InviteService'
 
 export const addUserId = (userId) => ({
   type: Types.ADD_USER_ID,
@@ -55,5 +56,20 @@ export const loginUser = (user) => async function (dispatch) {
   } catch (e) {
     console.log(e)
     dispatch(addCreateUserErrors(['Unable to sign in, please try again.']))
+  }
+}
+
+export const addInvite = (invite) => ({
+  type: Types.INVITE_USER,
+  invite
+})
+
+export const inviteUser = (eventId, userId, token) => async function (dispatch) {
+  try {
+    const service = new InviteService('http://localhost:3000', token)
+    const invite = await service.inviteUser(eventId, userId)
+    dispatch(addInvite(invite))
+  } catch (e) {
+    console.log(e)
   }
 }

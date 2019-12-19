@@ -9,12 +9,11 @@ import { updateYelpItemsThunk } from '../redux/EventActions'
 const initialState = { isLoading: false, results: [], value: '' }
 
 class SearchExampleCategory extends Component {
-  state = initialState
+  state = initialState // eslint-disable-line
 
   handleResultSelect = (e, { result }) => {
-    if (this.state.value !== result.title){
+    if (this.state.value !== result.title) {
       this.setState({ value: result.title })
-      
       const offset = 0
       const location = 'Brooklyn, NY'
       this.props.updateYelpItemsThunk(result.alias, offset, location)
@@ -32,44 +31,47 @@ class SearchExampleCategory extends Component {
 
       this.setState({
         isLoading: false,
-        results: _.filter(categories, isMatch),
+        results: _.filter(categories, isMatch)
       })
     }, 300)
   }
 
-  render() {
+  render () {
     const { isLoading, value, results } = this.state
 
     return (
-      <Grid stackable centered>
-        <Grid.Row centered stretched>
-        <Grid.Column >
-          <Search
-            aligned='right'
-            size='large'
-            loading={isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={_.debounce(this.handleSearchChange, 500, {
-              leading: true,
-            })}
-            results={results}
-            value={value}
-            {...this.props}
-          />
-        </Grid.Column>
-        <Grid.Column float='left'>
-        <Responsive getWidth={getWidth} maxWidth={Responsive.onlyTablet.minWidth} >
-          <Card.Group items={mapYelpToCardItems(this.props.items)} />
-          </Responsive>
-        </Grid.Column>
+      <Grid stackable>
+        <Grid.Row stretched>
+          <Grid.Column width='16' textAlign='right'>
+            <Search
+              size={this.props.size}
+              loading={isLoading}
+              onResultSelect={this.handleResultSelect}
+              onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                leading: true
+              })}
+              results={results}
+              value={value}
+              {...this.props}
+            />
+          </Grid.Column>
+          <Grid.Column float='left'>
+            <Responsive getWidth={getWidth} maxWidth={430}>
+              <Card.Group items={mapYelpToCardItems(this.props.items)} />
+            </Responsive>
+            <Responsive getWidth={getWidth} minWidth={431} maxWidth={Responsive.onlyMobile.maxWidth}>
+              <Card.Group itemsPerRow={2} items={mapYelpToCardItems(this.props.items)} />
+            </Responsive>
+          </Grid.Column>
         </Grid.Row>
-       
+
       </Grid>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
+  ...ownProps,
   items: state.yelpItems
 })
 

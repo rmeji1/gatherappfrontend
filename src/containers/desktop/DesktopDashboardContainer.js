@@ -20,8 +20,18 @@ export class DesktopDashboardContainer extends Component {
     this.setState({ title: '', description: '' })
   }
 
-  render() {
-    const { isNewEventModalShown, closeNewEventModal } = this.props.props
+  contactsIfNullOrEmpty = () => {
+    if (this.props.props.user) {
+      if (this.props.props.user.contacts.length !== 0) {
+        console.log(this.props.props.user.contacts[0].username)
+        return this.props.props.user.contacts.map(contact => ({ header: contact.username }))
+      }
+    }
+    return [{ header: 'Please use search to add...' }]
+  }
+
+  render () {
+    const { isNewEventModalShown, closeNewEventModal, closeAddContactModal } = this.props.props
     const { title, description } = this.state
     return (
       <DesktopMenuContainer>
@@ -50,10 +60,10 @@ export class DesktopDashboardContainer extends Component {
           <Modal.Actions>
             <Button color='red' onClick={() => closeNewEventModal()}>
               Cancel
-                </Button>
+            </Button>
             <Button primary onClick={this.handlGatherSubmission}>
               Create
-                </Button>
+            </Button>
           </Modal.Actions>
         </Modal>
 
@@ -64,14 +74,19 @@ export class DesktopDashboardContainer extends Component {
                 My Contacts
               </Grid.Column>
               <Grid.Column textAlign='right' width={7}>
-                <SearchForUsers />
+                <SearchForUsers
+                  addContactRemote={(userId) => this.props.props.addContactRemote(userId, this.props.props.userId, this.props.props.token)} 
+                />
               </Grid.Column>
             </Grid>         
           </Modal.Header>
           <Modal.Content content scrolling>
-            
+            <Card.Group items={this.contactsIfNullOrEmpty()} />
           </Modal.Content>
           <Modal.Actions>
+            <Button color='red' onClick={() => closeAddContactModal()}>
+              Close
+            </Button>
           </Modal.Actions>
         </Modal>
       </DesktopMenuContainer>

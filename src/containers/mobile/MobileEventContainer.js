@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { connect } from 'react-redux'
 import MobileSideBar from '../../subcomponents/MobileSideBar'
 import { Container, Card, Menu, Segment } from 'semantic-ui-react'
 import { mapEventToCard } from '../../Helpers/HelpFunctions'
@@ -12,6 +11,7 @@ const EventContainer = ({ events }) => {
   const event = events.find(event => parseInt(event.id) === parseInt(id))
   if (!event) return null
   const cardInfo = mapEventToCard(event)
+
   return (
     <MobileSideBar>
       <Container style={{ minHeight: '95vh' }}>
@@ -41,9 +41,4 @@ const EventContainer = ({ events }) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.events
-  }
-}
-export default connect(mapStateToProps)(EventContainer)
+export default EventContainer
