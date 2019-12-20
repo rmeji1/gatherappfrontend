@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
   token: state.authProps.token,
   yelpItems: state.yelpItems,
   contacts: state.user ? state.user.contacts : [],
-  activePage: state.activePage
+  activePage: state.activePage,
+  yelpItemsTotalCount: state.yelpItemsTotalCount
 })
 
 const mapDispatchToProps = dispatch => ({

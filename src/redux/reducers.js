@@ -11,7 +11,8 @@ const initialState = {
   yelpItems: [],
   isContactModalHidden: true,
   user: null,
-  activePage: 1
+  activePage: 1,
+  yelpItemsTotalCount: 0
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -118,6 +119,15 @@ const activePage = (state = initialState.activePage, action) => {
       return state
   }
 }
+
+const yelpItemsTotalCount = (state = initialState.yelpItemsTotalCount, action) => {
+  switch (action.type) {
+    case Types.YELP_ITEMS_COUNT_TOTAL:
+      return action.yelpItemsTotalCount
+    default:
+      return state
+  }
+}
 export default combineReducers({
   loginErrors,
   isLogin,
@@ -128,5 +138,6 @@ export default combineReducers({
   yelpItems,
   isContactModalHidden,
   user,
-  activePage
+  activePage,
+  yelpItemsTotalCount
 })

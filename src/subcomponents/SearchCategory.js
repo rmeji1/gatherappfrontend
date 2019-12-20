@@ -15,7 +15,7 @@ class SearchExampleCategory extends Component {
     if (this.props.activePage !== prevProps.activePage) {
       const location = 'Brooklyn, NY'
       console.log(this.state.value)
-      this.props.updateYelpItemsThunk(this.state.alias, (this.props.activePage - 1) * 10, location)
+      this.props.updateYelpItemsThunk(this.state.alias, (this.props.activePage - 1) * 12, location)
     }
   }
 
@@ -23,7 +23,7 @@ class SearchExampleCategory extends Component {
     if (this.state.value !== result.alias) {
       this.setState({ value: result.title, alias: result.alias })
       const location = 'Brooklyn, NY'
-      this.props.updateYelpItemsThunk(result.alias, (this.props.activePage - 1) * 10, location)
+      this.props.updateYelpItemsThunk(result.alias, (this.props.activePage - 1) * 12, location)
     }
   }
 

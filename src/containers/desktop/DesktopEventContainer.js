@@ -27,7 +27,7 @@ const DesktopEventContainer = (props) => {
             firstItem={null}
             lastItem={null}
             siblingRange={1}
-            totalPages={10}
+            totalPages={props.yelpItemsTotalCount / 12}
             onPageChange={(event, data) => onPageChange(event, data, props.changeActivePageTo)}
           />
         </Grid.Column>

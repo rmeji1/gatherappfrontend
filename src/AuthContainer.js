@@ -5,7 +5,7 @@ import { Form, Grid, Header, Image, Message, Segment, Menu, Container, Responsiv
 import LoginButton from './subcomponents/LoginButton'
 import { Link, Redirect } from 'react-router-dom'
 
-class AuthContainer extends Component{
+class AuthContainer extends Component {
   state = { //eslint-ignore-line
     username : '',
     password: '',

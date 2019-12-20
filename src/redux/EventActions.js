@@ -43,12 +43,18 @@ export const updateYelpItems = (items) => ({
   yelpItems: items
 })
 
+export const updateYelpItemsTotalCount = (yelpItemsTotalCount) => ({
+  type: Types.YELP_ITEMS_COUNT_TOTAL,
+  yelpItemsTotalCount
+})
+
 export const updateYelpItemsThunk = (categories, offset, location) =>
   async function (dispatch) {
-    const limit = 10
+    const limit = 12
     const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`) //eslint-disable-line
     const items = await response.json()
     dispatch(updateYelpItems(items.businesses))
+    dispatch(updateYelpItemsTotalCount(items.total))
   }
 
 export const changeActivePageTo = (activePage) => ({
