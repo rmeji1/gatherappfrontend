@@ -7,9 +7,10 @@ import { withRouter } from 'react-router-dom'
 
 const EventContainer = (props) => {
   useEffect(() => {
+    console.log('calling effect in event container')
     const { getEvents, userId, token } = props
     getEvents(userId, token)
-  }, [props.events.length])
+  }, [])
   return <ResponsiveContainer {...props} />
 }
 

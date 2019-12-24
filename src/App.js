@@ -1,21 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { Component } from 'react'
 import './App.css'
 import { connect } from 'react-redux'
 import AuthContainer from './AuthContainer'
 import LandingContainer from './LandingContainer'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/parents/DashboardContainer'
 import EventContainer from './containers/parents/EventContainer'
-import { showUser } from './redux/userActionCreator'
-import { subscribeUser } from './subscription'
-function App ({ userId, showUser, userToken, shouldShowUser }) {
-  useEffect(() => {
-    showUser(userId, userToken)
-    subscribeUser(userId)
+import { addCreatedEvent } from './redux/EventActions'
+class App extends Component{
+  componentDidMount () {
+    navigator.serviceWorker.addEventListener('message', this.handleMessage)
+  }
 
-  }, [shouldShowUser, showUser, userToken, userId])
-  return (
+  handleMessage = (event) => {
+    if (event.origin !== 'http://localhost:3001') return
+    const action = JSON.parse(event.data)
+    this.props.dispatch(action)
+  }
+
+  render = () => 
     <>
       <Switch>
         <Route exact path='/signup' component={AuthContainer} />
@@ -25,7 +29,6 @@ function App ({ userId, showUser, userToken, shouldShowUser }) {
         <PrivateRoute path='/event/:id'><EventContainer /></PrivateRoute>
       </Switch>
     </>
-  )
 }
 
 const mapStateToProps = state => {
@@ -37,4 +40,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { showUser })(App)
+export default connect(mapStateToProps)(App)

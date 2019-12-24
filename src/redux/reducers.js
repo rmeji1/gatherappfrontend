@@ -30,8 +30,7 @@ const authProps = (state = initialState.authProps, action) => {
       return action.authProps
     case Types.LOGOUT_USER:
       window.localStorage.removeItem('authProps')
-      console.log(initialState.authProps)
-      return initialState.authProps
+      return null
     default:
       return state
   }
@@ -51,6 +50,8 @@ const events = (state = initialState.events, action) => {
     case Types.SAVE_EVENTS:
       return action.events
     case Types.ADD_EVENT:
+      const event = state.find(event => event.id === action.event.id)
+      if (event) return state
       return [...state, action.event]
     case Types.INVITE_USER:
       return state.map(event => event.id === action.invite.event.id ? action.invite.event : event) 

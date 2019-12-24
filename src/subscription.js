@@ -1,7 +1,4 @@
-console.log(process.env.REACT_APP_API_URL)
-console.log(process.env.REACT_APP_PUBLIC_VAPID_KEY)
 const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
-console.log(convertedVapidKey)
 
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - base64String.length % 4) % 4)
@@ -18,8 +15,6 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function sendSubscription(subscription, userId) {
-  console.log(subscription)
-  console.log(`${process.env.REACT_APP_API_URL}/users/${userId}/notifications/create`)
   return fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/notifications/create`, {
     method: 'POST',
     body: JSON.stringify(subscription),

@@ -3,22 +3,16 @@ self.addEventListener('push', async event => {
   const data = event.data.json()
   console.log('New notification', data)
   const options = {
-    body: data.body,
+    body: data.title,
   }
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  )
-
-  const client = await clients.get(event.clientId);
-  // Exit early if we don't get the client.
-  // Eg, if it closed.
-  if (!client) return;
-
-  // Send a message to the client.
-  client.postMessage({
-    msg: "Hey I just got a fetch from you!",
-    url: event.request.url
-  });
- 
+    self.registration.showNotification("New event", options)
+    )
+    
+    const client = await clients.get(event.clientId);
+    console.log(client)
+    // debugger
+  console.log('Sending data')
+  self.clients.matchAll().then(all => all.map(client => client.postMessage(JSON.stringify(data))))
 })
 
