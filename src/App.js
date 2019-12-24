@@ -8,10 +8,12 @@ import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/parents/DashboardContainer'
 import EventContainer from './containers/parents/EventContainer'
 import { showUser } from './redux/userActionCreator'
-
+import { subscribeUser } from './subscription'
 function App ({ userId, showUser, userToken, shouldShowUser }) {
   useEffect(() => {
     showUser(userId, userToken)
+    subscribeUser(userId)
+
   }, [shouldShowUser, showUser, userToken, userId])
   return (
     <>

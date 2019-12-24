@@ -49,8 +49,9 @@ class SearchExampleCategory extends Component {
     return (
       <Grid stackable>
         <Grid.Row stretched>
-          <Grid.Column width='16' textAlign='right'>
+          <Grid.Column width='16' textAlign='center'>
             <Search
+              aligned='right'
               size={this.props.size}
               loading={isLoading}
               onResultSelect={(event, result) => this.handleResultSelect(event, result)}
@@ -60,7 +61,6 @@ class SearchExampleCategory extends Component {
               results={results}
               value={value}
             />
-            {/*...this.props https://reactjs.org/warnings/unknown-prop.html*/}
           </Grid.Column>
           <Grid.Column float='left'>
             <Responsive getWidth={getWidth} maxWidth={430}>

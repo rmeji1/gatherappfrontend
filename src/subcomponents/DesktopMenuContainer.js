@@ -2,6 +2,7 @@ import React from 'react'
 import { Container, Menu, Responsive, Image } from 'semantic-ui-react'
 import { Link, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { logout } from '../redux/actions'
 import { openNewEventModal } from '../redux/EventActions'
 import { openAddContactModal } from '../redux/ContactActions'
 
@@ -14,7 +15,7 @@ const DesktopMenuContainer = props =>
           <Menu.Item name='Dashboard' as={NavLink} to='/dashboard'></Menu.Item>
           <Menu.Item name='add event' onClick={() => props.openNewEventModal()}></Menu.Item>
           <Menu.Item name='my contacts' onClick={() => props.openAddContactModal()} />
-          <Menu.Item name='Log out'></Menu.Item>
+          <Menu.Item name='Log out' onClick={()=> props.logout()} ></Menu.Item>
         </Menu.Menu>
       </Menu>
       <Container>
@@ -28,6 +29,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout()),
   openAddContactModal: () => dispatch(openAddContactModal()),
   openNewEventModal: () => dispatch(openNewEventModal())
 })

@@ -12,6 +12,10 @@ export const addUserToken = (userToken) => ({
   userToken
 })
 
+export const logout = () => ({
+  type: Types.LOGOUT_USER
+})
+
 export const addCreateUserErrors = (errors) => ({
   type: Types.CREATE_USER_ERROR,
   errors

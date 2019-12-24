@@ -11,13 +11,15 @@ const MyContactsModal = (props) =>
         </Grid.Column>
         <Grid.Column textAlign='right' width={7}>
           <SearchForUsers
+            user={props.user}
+            token={props.token}
             addContactRemote={(userId) => props.addContactRemote(userId, props.userId, props.token)}
           />
         </Grid.Column>
       </Grid>
     </Modal.Header>
     <Modal.Content scrolling>
-      <Card.Group items={props.contacts} />
+      <Card.Group items={props.contacts} centered/>
     </Modal.Content>
     <Modal.Actions>
       <Button color='red' onClick={() => props.closeAddContactModal()}>

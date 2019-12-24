@@ -33,7 +33,7 @@ class MobileDashboardContainer extends React.Component {
 
   render () {
     const { title, description } = this.state
-    const { events, isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote } = this.props
+    const { events, isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote, user, token } = this.props
 
     return (
       <MobileSideBar>
@@ -52,12 +52,14 @@ class MobileDashboardContainer extends React.Component {
           onHandleGatherSubmission={this.handleGatherSubmission}
         />
         <MyContactsModal
+          user={user}
+          token={token}
           isContactModalHidden={isContactModalHidden}
           addContactRemote={addContactRemote}
           contacts={this.contactsIfNullOrEmpty()}
           closeAddContactModal={closeAddContactModal}
         />
-        <MyContactsModal isContactModalHidden={isContactModalHidden} addContactRemote={addContactRemote} contacts={this.contactsIfNullOrEmpty()} closeAddContactModal={closeAddContactModal} />
+        {/* <MyContactsModal isContactModalHidden={isContactModalHidden} addContactRemote={addContactRemote} contacts={this.contactsIfNullOrEmpty()} closeAddContactModal={closeAddContactModal} /> */}
 
       </MobileSideBar>
     )

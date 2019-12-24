@@ -28,6 +28,10 @@ const authProps = (state = initialState.authProps, action) => {
   switch (action.type) {
     case Types.ADD_AUTH_PROPS:
       return action.authProps
+    case Types.LOGOUT_USER:
+      window.localStorage.removeItem('authProps')
+      console.log(initialState.authProps)
+      return initialState.authProps
     default:
       return state
   }

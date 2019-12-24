@@ -30,7 +30,7 @@ export class DesktopDashboardContainer extends Component {
   }
 
   render () {
-    const { isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote } = this.props
+    const { isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote, user } = this.props
     const { title, description } = this.state
     return (
       <DesktopMenuContainer>
@@ -44,6 +44,7 @@ export class DesktopDashboardContainer extends Component {
           onHandleGatherSubmission={this.handleGatherSubmission}
         />
         <MyContactsModal
+          user={user}
           isContactModalHidden={isContactModalHidden}
           addContactRemote={addContactRemote}
           contacts={this.contactsIfNullOrEmpty()}
