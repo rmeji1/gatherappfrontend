@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Card, Segment, Header } from 'semantic-ui-react'
 import { mapYelpToCardItems } from '../../Helpers/HelpFunctions'
 import InviteListCard from '../../subcomponents/InviteListCard'
 import SearchCategory from '../../subcomponents/SearchCategory'
 
 export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees }) => {
+  const [isVisible, setVisible] = useState(false)
+  const [yelpId, setYelpId] = useState('')
   return (
     <Grid columns={3} divided centered textAlign='center'>
       <Grid.Row columns={3}>
@@ -30,7 +32,10 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees })
               <SearchCategory size='large' />
             </Segment>
             <Segment>
-              <Card.Group itemsPerRow={3} items={mapYelpToCardItems(yelpItems)} />
+              <Card.Group itemsPerRow={3} items={mapYelpToCardItems(yelpItems, (yelpId) => {
+                setYelpId(yelpId)
+                setVisible(true)
+              })} />
             </Segment>
           </Segment.Group>
         </Grid.Column>
@@ -43,7 +48,7 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees })
         </Grid.Column>
       </Grid.Row>
     </Grid>
-  );
+  )
 }
 
 export default OnlyDesktopGrid

@@ -18,11 +18,11 @@ export const mapEventToCard = (event) => ({
   fluid: true
 })
 
-export const mapYelpToCardItems = (items) => items.map(item => ({
+export const mapYelpToCardItems = (items, handleOnClick) => console.log(items[0]) || items.map(item => ({
   header: item.name,
   image: item.image_url,
   description: item.description,
   meta: `Rating: ${item.rating}, Price: ${item.price}`,
-  fluid: true, 
-  extra: <Button floated='right' primary>Add to I.T.</Button>
+  fluid: true,
+  extra: <Button floated='right' primary onClick={event => handleOnClick(item.id)}>Add to I.T.</Button>
 }))
