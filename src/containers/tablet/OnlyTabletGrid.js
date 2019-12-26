@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Segment, Card, Header, Pagination } from 'semantic-ui-react'
+import { Grid, Segment, Card, Header } from 'semantic-ui-react'
 import InviteListCard from '../../subcomponents/InviteListCard'
 import SearchCategory from '../../subcomponents/SearchCategory'
 import { mapYelpToCardItems } from '../../Helpers/HelpFunctions'

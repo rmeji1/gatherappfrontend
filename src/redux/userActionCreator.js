@@ -1,4 +1,5 @@
 import * as Type from './actionTypes'
+import { addInvitations } from './InvitationActions'
 
 export const saveUser = (user) => ({
   type: Type.SHOW_USER,
@@ -15,4 +16,5 @@ export const showUser = (id, token) =>
     })
     const user = await response.json()
     dispatch(saveUser(user))
+    dispatch(addInvitations(user.invitations))
   }

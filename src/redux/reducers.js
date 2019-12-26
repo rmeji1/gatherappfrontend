@@ -12,7 +12,8 @@ const initialState = {
   isContactModalHidden: true,
   user: null,
   activePage: 1,
-  yelpItemsTotalCount: 0
+  yelpItemsTotalCount: 0,
+  invitations: []
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -133,6 +134,19 @@ const yelpItemsTotalCount = (state = initialState.yelpItemsTotalCount, action) =
       return state
   }
 }
+
+const invitations = (state = initialState.invitations, action) => {
+  switch (action.type) {
+    case Types.ADD_INVITATIONS:
+      return action.invitations
+    case Types.ADD_INVITATION:
+      return state.find(invitation => invitation.id === action.invitation.id) 
+                ? state : [...state, action.invitation]
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   loginErrors,
   isLogin,
@@ -144,5 +158,6 @@ export default combineReducers({
   isContactModalHidden,
   user,
   activePage,
-  yelpItemsTotalCount
+  yelpItemsTotalCount,
+  invitations
 })

@@ -3,11 +3,13 @@ import './App.css'
 import { connect } from 'react-redux'
 import AuthContainer from './AuthContainer'
 import LandingContainer from './LandingContainer'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/parents/DashboardContainer'
 import EventContainer from './containers/parents/EventContainer'
-import { addCreatedEvent } from './redux/EventActions'
+import { showUser } from './redux/userActionCreator'
+
+// import { addCreatedEvent } from './redux/EventActions'
 class App extends Component{
   componentDidMount () {
     navigator.serviceWorker.addEventListener('message', this.handleMessage)

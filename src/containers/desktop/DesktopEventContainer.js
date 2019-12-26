@@ -34,6 +34,7 @@ const DesktopEventContainer = (props) => {
       </Grid>
 
       <Responsive maxWidth={Responsive.onlyTablet.maxWidth}>
+        {console.log(event)}
         <OnlyTabletGrid
           cardInfo={cardInfo}
           contacts={contacts}
