@@ -10,7 +10,7 @@ import EventContainer from './containers/parents/EventContainer'
 import { showUser } from './redux/userActionCreator'
 
 // import { addCreatedEvent } from './redux/EventActions'
-class App extends Component{
+class App extends Component {
   componentDidMount () {
     navigator.serviceWorker.addEventListener('message', this.handleMessage)
   }
@@ -18,10 +18,13 @@ class App extends Component{
   handleMessage = (event) => {
     if (event.origin !== 'http://localhost:3001') return
     const action = JSON.parse(event.data)
-    this.props.dispatch(action)
+    console.log(action)
+    const { userId } = this.props
+    if (action.creator_id === userId && action.type === 'ADD_Event') this.props.dispatch(action)
+    else if (action.type === 'ADD_INVITATION' && action.invitation.user_id === userId) this.props.dispatch(action)
   }
 
-  render = () => 
+  render = () =>
     <>
       <Switch>
         <Route exact path='/signup' component={AuthContainer} />
