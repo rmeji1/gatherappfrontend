@@ -61,3 +61,29 @@ export const changeActivePageTo = (activePage) => ({
   type: Types.CHANGE_EVENTS_ACTIVE_PAGE,
   activePage
 })
+
+export const updateInvite = (invitation) => ({
+  type: Types.UPDATE_INVITE,
+  invitation
+})
+
+export const confirmEvent = (confirmed, invitationId) =>
+  async function (dispatch) {
+    try {
+      const response = await fetch(`http://localhost:3000/invitations/${invitationId}`, { //eslint-disable-line 
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({ invitation: { confirmed } })
+      })
+      if (!response.ok) throw await response.json()
+      const invitation = await response.json()
+      if (invitation.confirmed) dispatch(addCreatedEvent(invitation.event))
+      delete invitation.event
+      dispatch(updateInvite(invitation))
+    } catch (e) {
+      console.log(e)
+    }
+  }

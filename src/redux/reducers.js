@@ -140,8 +140,10 @@ const invitations = (state = initialState.invitations, action) => {
     case Types.ADD_INVITATIONS:
       return action.invitations
     case Types.ADD_INVITATION:
-      return state.find(invitation => invitation.id === action.invitation.id) 
+      return state.find(invitation => invitation.id === action.invitation.id)
                 ? state : [...state, action.invitation]
+    case Types.UPDATE_INVITE:
+      return state.map(invite => invite.id === action.invitation.id ? action.invitation : invite)
     default:
       return state
   }

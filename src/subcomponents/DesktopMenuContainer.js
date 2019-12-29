@@ -6,10 +6,6 @@ import { logout } from '../redux/actions'
 import { openNewEventModal } from '../redux/EventActions'
 import { openAddContactModal } from '../redux/ContactActions'
 import { mapInvitationsToCardItems } from '../Helpers/HelpFunctions'
-const options = [
-  { key: 1, label: 'Choice 1', value: 1 },
-  { key: 2, text: 'Choice 2', value: 2 },
-]
 
 const DesktopMenuContainer = props =>
   <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -24,13 +20,13 @@ const DesktopMenuContainer = props =>
             trigger={
               <Menu.Item name='Invitations'>
                 Invitations
-                {props.invitations.length !== 0 ? <Label attached='top right' color='blue' circular content={props.invitations.length} /> : null}
+                {props.invitations.length !== 0 ? <Label attached='top right' color='blue' circular content={props.invitations.filter(invite => invite.confirmed === null).length} /> : null}
               </Menu.Item>
             }
           >
             <Segment className='invitations-segment'
             >
-              <Card.Group items={mapInvitationsToCardItems(props.invitations)} />
+              <Card.Group items={mapInvitationsToCardItems(props.invitations.filter(invite => invite.confirmed === null))} />
             </Segment>
           </Portal>
           <Menu.Item name='add event' onClick={() => props.openNewEventModal()}></Menu.Item>
