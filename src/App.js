@@ -8,11 +8,17 @@ import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/parents/DashboardContainer'
 import EventContainer from './containers/parents/EventContainer'
 import { showUser } from './redux/userActionCreator'
+import { subscribeUser } from './subscription'
 
 // import { addCreatedEvent } from './redux/EventActions'
 class App extends Component {
   componentDidMount () {
     navigator.serviceWorker.addEventListener('message', this.handleMessage)
+    const { userId, userToken } = this.props
+    if (userId && userToken) {
+      this.props.showUser(userId, userToken)
+      subscribeUser(userId)
+    }
   }
 
   handleMessage = (event) => {
@@ -40,9 +46,13 @@ const mapStateToProps = state => {
   const { authProps } = state
   return {
     userId: authProps ? authProps.user_id : null,
-    userToken: authProps ? authProps.token : null,
-    shouldShowUser: !state.user
+    userToken: authProps ? authProps.token : null
   }
 }
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToState = dispatch => ({
+  showUser: (userId, userToken) => dispatch(showUser(userId, userToken)),
+  dispatch
+})
+
+export default connect(mapStateToProps, mapDispatchToState)(App)

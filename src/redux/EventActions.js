@@ -19,11 +19,26 @@ export const closeNewEventModal = () => ({
   type: Types.CLOSE_NEW_EVENT_MODAL
 })
 
+export const addEventLists = (eventsList) => ({
+  type: Types.ADD_EVENTS_LISTS,
+  eventsList
+})
+
+export const updateEventLists = (eventsListItem) => ({
+  type: Types.UPDATE_EVENTS_LISTS,
+  eventsListItem
+})
+
 export const fetchEventsFor = (userId, token) => (
   async function (dispatch) {
     const service = new EventService(userId, token, 'http://localhost:3000')
     try {
       const events = await service.fetchAllEvents()
+      const eventsList = events.map((event) => ({
+        eventId: event.id,
+        items: event.events_lists
+      }))
+      dispatch(addEventLists(eventsList))
       dispatch(saveAllEvents(events))
     } catch (e) {
       console.log(e)
@@ -48,10 +63,10 @@ export const updateYelpItemsTotalCount = (yelpItemsTotalCount) => ({
   yelpItemsTotalCount
 })
 
-export const updateYelpItemsThunk = (categories, offset, location) =>
+export const updateYelpItemsThunk = (categories, offset, location, Authorization) =>
   async function (dispatch) {
     const limit = 12
-    const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`) //eslint-disable-line
+    const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`, { headers: {Authorization}}) //eslint-disable-line
     const items = await response.json()
     dispatch(updateYelpItems(items.businesses))
     dispatch(updateYelpItemsTotalCount(items.total))
@@ -83,6 +98,17 @@ export const confirmEvent = (confirmed, invitationId) =>
       if (invitation.confirmed) dispatch(addCreatedEvent(invitation.event))
       delete invitation.event
       dispatch(updateInvite(invitation))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+export const addToEventsList = (yelpItem, start_time, end_time, eventId, token) => //eslint-disable-line
+  async function (dispatch) {
+    try {
+      const service = new EventService(null, token, 'http://localhost:3000')
+      const newEventListItem = await service.addToEventsList(yelpItem, start_time, end_time, eventId)
+      dispatch(updateEventLists(newEventListItem))
     } catch (e) {
       console.log(e)
     }

@@ -7,7 +7,6 @@ import { withRouter } from 'react-router-dom'
 
 const EventContainer = (props) => {
   useEffect(() => {
-    console.log('calling effect in event container')
     const { getEvents, userId, token } = props
     getEvents(userId, token)
   }, [])
@@ -21,7 +20,8 @@ const mapStateToProps = state => ({
   yelpItems: state.yelpItems,
   contacts: state.user ? state.user.contacts : [],
   activePage: state.activePage,
-  yelpItemsTotalCount: state.yelpItemsTotalCount
+  yelpItemsTotalCount: state.yelpItemsTotalCount,
+  eventsLists: state.eventsList
 })
 
 const mapDispatchToProps = dispatch => ({

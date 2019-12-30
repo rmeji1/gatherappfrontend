@@ -5,7 +5,7 @@ import InviteListCard from '../../subcomponents/InviteListCard'
 import SearchCategory from '../../subcomponents/SearchCategory'
 import TimeModal from '../../subcomponents/TimeModal'
 
-export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees }) => {
+export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees, eventsList }) => {
   const [isVisible, setVisible] = useState(false)
   const [yelpId, setYelpId] = useState('')
   return (
@@ -20,13 +20,13 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees })
                 meta={cardInfo.meta}
                 fluid={cardInfo.fluid}
               />
-              <Segment.Group style={{ marginTop: '1em' }}>
-                <Segment>
-                  <Header as='h3' textAlign='center' content='Gather I.L.' />
-                  <InviteListCard eventId={id} contacts={contacts} invitees={invitees} />
-                </Segment>
-              </Segment.Group>
+              {/* <Segment.Group style={{ marginTop: '1em' }}> */}
+              <Segment>
+                <Header as='h3' textAlign='center' content='Gather I.L.' />
+                <InviteListCard eventId={id} contacts={contacts} invitees={invitees} />
+              </Segment>
             </Segment.Group>
+            {/* </Segment.Group> */}
           </Grid.Column>
           <Grid.Column width={10}>
             <Segment.Group raised>
@@ -34,10 +34,13 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees })
                 <SearchCategory size='large' />
               </Segment>
               <Segment>
-                <Card.Group itemsPerRow={3} items={mapYelpToCardItems(yelpItems, (yelpId) => {
-                  setYelpId(yelpId)
-                  setVisible(true)
-                })} />
+                <Card.Group
+                  itemsPerRow={3}
+                  items={mapYelpToCardItems(yelpItems, (yelpId) => {
+                    setYelpId(yelpId)
+                    setVisible(true)
+                  })}
+                />
               </Segment>
             </Segment.Group>
           </Grid.Column>
@@ -45,12 +48,31 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees })
             <Segment.Group>
               <Segment textAlign='center'>
                 <Header as='h3' content='Gather I.T' />
+                {
+                  eventsList.items.map((item) => (
+                    <Card key={`event-list-item${item.id}`}>
+                      <Card.Content>
+                        <Card.Header>{item.name}</Card.Header>
+                        <Card.Description>{item.address}</Card.Description>
+                      </Card.Content>
+                      <Card.Content extra>
+                        {item.start_time} - {item.end_time}
+                      </Card.Content>
+                    </Card>
+                  ))
+                }
+                
               </Segment>
             </Segment.Group>
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <TimeModal open={isVisible} onClose={() => setVisible(false)} />
+      <TimeModal
+        open={isVisible}
+        onClose={() => setVisible(false)}
+        yelpItem={yelpItems.find((item) => item.id === yelpId)}
+        eventId={id}
+      />
     </>
   )
 }

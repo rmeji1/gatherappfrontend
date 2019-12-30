@@ -15,7 +15,7 @@ class SearchExampleCategory extends Component {
     if (this.props.activePage !== prevProps.activePage) {
       const location = 'Brooklyn, NY'
       console.log(this.state.value)
-      this.props.updateYelpItemsThunk(this.state.alias, (this.props.activePage - 1) * 12, location)
+      this.props.updateYelpItemsThunk(this.state.alias, (this.props.activePage - 1) * 12, location, this.props.token)
     }
   }
 
@@ -23,7 +23,7 @@ class SearchExampleCategory extends Component {
     if (this.state.value !== result.alias) {
       this.setState({ value: result.title, alias: result.alias })
       const location = 'Brooklyn, NY'
-      this.props.updateYelpItemsThunk(result.alias, (this.props.activePage - 1) * 12, location)
+      this.props.updateYelpItemsThunk(result.alias, (this.props.activePage - 1) * 12, location, this.props.token)
     }
   }
 
@@ -80,11 +80,12 @@ class SearchExampleCategory extends Component {
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   items: state.yelpItems,
-  activePage: state.activePage
+  activePage: state.activePage,
+  token: state.authProps.token
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateYelpItemsThunk: (value, offset, location) => dispatch(updateYelpItemsThunk(value, offset, location))
+  updateYelpItemsThunk: (value, offset, location, token) => dispatch(updateYelpItemsThunk(value, offset, location, token))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(SearchExampleCategory)
 

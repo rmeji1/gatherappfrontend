@@ -15,7 +15,8 @@ const DesktopEventContainer = (props) => {
   const event = events.find(event => parseInt(event.id) === parseInt(id))
   if (!event) return null
   const cardInfo = mapEventToCard(event)
-
+  const eventsList = props.eventsLists.find(list => list.eventId === event.id)
+  console.log(eventsList)
   return (
     <DesktopMenuContainer>
       <Grid centered>
@@ -50,6 +51,7 @@ const DesktopEventContainer = (props) => {
           yelpItems={yelpItems}
           id={event.id}
           invitees={event.invitations.map(invite => invite.user_id)}
+          eventsList={eventsList}
         />
       </Responsive>
     </DesktopMenuContainer>

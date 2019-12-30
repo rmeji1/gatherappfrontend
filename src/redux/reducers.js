@@ -13,7 +13,8 @@ const initialState = {
   user: null,
   activePage: 1,
   yelpItemsTotalCount: 0,
-  invitations: []
+  invitations: [],
+  eventsList: []
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -149,6 +150,25 @@ const invitations = (state = initialState.invitations, action) => {
   }
 }
 
+const eventsList = (state = initialState.eventsList, action) => {
+  switch (action.type) {
+    case Types.ADD_EVENTS_LISTS:
+      return action.eventsList
+    case Types.UPDATE_EVENTS_LISTS:
+      return state.map((eventsList) => {
+        if (eventsList.eventId === action.eventsListItem.event_id) {
+          return {
+            ...eventsList,
+            items: [...eventsList.items, action.eventsListItem]
+          }
+        }
+        return eventsList
+      })
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   loginErrors,
   isLogin,
@@ -161,5 +181,6 @@ export default combineReducers({
   user,
   activePage,
   yelpItemsTotalCount,
-  invitations
+  invitations,
+  eventsList
 })
