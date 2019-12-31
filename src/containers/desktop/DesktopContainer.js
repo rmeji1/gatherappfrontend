@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Responsive, Visibility, Segment, Menu, Container } from 'semantic-ui-react' 
+import { Responsive, Visibility, Segment, Menu, Container, Grid, Header, List, Divider, Image } from 'semantic-ui-react'
 import HomepageHeading from '../../subcomponents/HomepageHeading'
 
 class DesktopContainer extends Component {
@@ -34,7 +34,7 @@ class DesktopContainer extends Component {
               size='large'
             >
               <Container fluid>
-                <Menu.Item header content="Gather" />
+                <Menu.Item header content='Gather' />
                 {/* <Menu.Item position='right'>
                   <Button as='a' inverted={!fixed}>
                     Log in
@@ -50,6 +50,26 @@ class DesktopContainer extends Component {
         </Visibility>
 
         {children}
+        <Segment inverted vertical style={{ margin: '0em 0em 0em' }}>
+          <Container textAlign='center'>
+            <Divider inverted section />
+            <Image centered size='mini' src='/logo.png' />
+            <List horizontal inverted divided link size='small'>
+              <List.Item as='a' href='#'>
+                Site Map
+              </List.Item>
+              <List.Item as='a' href='#'>
+                Contact Us
+              </List.Item>
+              <List.Item as='a' href='#'>
+                Terms and Conditions
+              </List.Item>
+              <List.Item as='a' href='#'>
+                Privacy Policy
+              </List.Item>
+            </List>
+          </Container>
+        </Segment>
       </Responsive>
     )
   }

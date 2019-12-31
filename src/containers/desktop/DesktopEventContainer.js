@@ -16,7 +16,6 @@ const DesktopEventContainer = (props) => {
   if (!event) return null
   const cardInfo = mapEventToCard(event)
   const eventsList = props.eventsLists.find(list => list.eventId === event.id)
-  console.log(eventsList)
   return (
     <DesktopMenuContainer>
       <Grid centered>

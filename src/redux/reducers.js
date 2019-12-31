@@ -15,7 +15,8 @@ const initialState = {
   yelpItemsTotalCount: 0,
   invitations: [],
   eventsList: [],
-  sessionId: window.localStorage.getItem('sessionId')
+  sessionId: window.localStorage.getItem('sessionId'),
+  hasNoEvents: false
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -181,6 +182,15 @@ export const sessionId = (state = initialState.sessionId, action) => {
   }
 }
 
+export const hasNoEvents = (state = initialState.hasNoEvents, action) => {
+  switch (action.type) {
+    case Types.NO_EVENTS:
+      return action.hasNoEvents
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   loginErrors,
   isLogin,
@@ -195,5 +205,6 @@ export default combineReducers({
   yelpItemsTotalCount,
   invitations,
   eventsList,
-  sessionId
+  sessionId,
+  hasNoEvents
 })

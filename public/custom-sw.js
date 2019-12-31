@@ -1,18 +1,11 @@
 
-self.addEventListener('push', async event => {
+self.addEventListener('push', async event => { //eslint-disable-line
   const data = event.data.json()
-  console.log('New notification', data)
-  const options = {
-    body: data.title,
+  if (data.type === 'ADD_INVITATION') {
+    const options = { body: data.invitation.event_title }
+    event.waitUntil(
+      self.registration.showNotification('You got invited!', options) //eslint-disable-line
+    )
   }
-  // event.waitUntil(
-  //   self.registration.showNotification("New event", options)
-  //   )
-    
-  // const client = await clients.get(event.clientId);
-  // console.log(client)
-  // debugger
-  console.log('Sending data')
-  self.clients.matchAll().then(clients => clients.map(client => client.postMessage(JSON.stringify(data))))
+  self.clients.matchAll().then(clients => clients.map(client => client.postMessage(JSON.stringify(data)))) //eslint-disable-line
 })
-

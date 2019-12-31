@@ -5,22 +5,35 @@ import DesktopMenuContainer from '../../subcomponents/DesktopMenuContainer'
 import { Link } from 'react-router-dom'
 import MyContactsModal from '../modals/MyContactsModal'
 import NewEventModal from '../modals/NewEventModal'
-import { Widget, addResponseMessage } from 'react-chat-widget'
+import { Widget, addResponseMessage, toggleWidget } from 'react-chat-widget'
 
 export class DesktopDashboardContainer extends Component {
   state = {
     title: '',
-    description: ''
+    description: '',
+    savedMessage: '',
+    widgetOpen: false
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.props.hasNoEvents && !this.state.widgetOpen) {
+      toggleWidget()
+      addResponseMessage("Hey, looks like you don't have any Gatherings yet.")
+      addResponseMessage('I can help you with that. Just type something like:')
+      addResponseMessage('I would like to create an event.')
+      this.setState({ widgetOpen: true })
+    }
+    if (prevProps.sessionId !== this.props.sessionId) {
+      this.handleNewUserMessage(this.state.savedMessage)
+    }
   }
 
   handleNewUserMessage = async (newMessage) => {
     const { sessionId, getSessionId, token, userId } = this.props
     try {
       if (!sessionId) { 
-        // TODO: set state with the message and return from this
-        //  goal being to call this method in component did update with a new sessionId
-        // we wil call this method again there. 
-        getSessionId(token)
+        this.setState({ savedMessage: newMessage }, () => getSessionId(token))
+        return
       }
       const response = await fetch('http://localhost:3000/assistant/create', { //eslint-disable-line
         method: 'POST',
@@ -36,7 +49,6 @@ export class DesktopDashboardContainer extends Component {
       })
       if (!response.ok) throw await response.json()
       const messages = await response.json()
-      console.log(messages)
       messages.message.output.generic.forEach(message => {
         addResponseMessage(message.text)
         if (message.text === 'Please wait while we create this event for you!') {
@@ -46,14 +58,12 @@ export class DesktopDashboardContainer extends Component {
         }
       })
     } catch (e) {
-      console.log(e)
-      if (e.need_new_session) getSessionId(token)
-      // TODO: line beneath this has to change for better user experience
-      addResponseMessage("Sorry, looks like something went wrong on our end please try again.")
+      if (e.need_new_session) this.setState({ savedMessage: newMessage }, () => getSessionId(token))
     }
   }
 
   handleChange = (event) => this.setState({ [event.target.name]: event.target.value })
+
   handleGatherSubmission = () => {
     const { userId, token } = this.props
     const { title, description } = this.state
@@ -77,6 +87,8 @@ export class DesktopDashboardContainer extends Component {
     return (
       <DesktopMenuContainer>
         <Widget
+          title='Your assistant'
+          subtitle='Hi, I am Watson! Ask me to create an event.'
           handleNewUserMessage={this.handleNewUserMessage}  //eslint-disable-line
         />
 

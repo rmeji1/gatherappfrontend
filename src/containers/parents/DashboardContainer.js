@@ -20,7 +20,8 @@ const mapStateToProps = (state) => {
     isNewEventModalShown: state.isNewEventModalShown,
     isContactModalHidden: state.isContactModalHidden,
     user: state.user,
-    sessionId: state.sessionId
+    sessionId: state.sessionId,
+    hasNoEvents: state.hasNoEvents
   }
 }
 
@@ -36,7 +37,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchEventsFor: (userId, token) => dispatch(fetchEventsFor(userId, token)),
     addContactRemote: (userId, ownerId, token) => dispatch(addContactRemote(userId, ownerId, token)),
-    closeAddContactModal: () => dispatch(closeAddContactModal()),
+    closeAddContactModal: () => dispatch(closeAddContactModal())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)

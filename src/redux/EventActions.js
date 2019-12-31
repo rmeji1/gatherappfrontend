@@ -34,6 +34,11 @@ export const appendToEventLists = (eventsListItem) => ({
   eventsListItem
 })
 
+export const userHasNoEvents = (hasNoEvents) => ({
+  type: Types.NO_EVENTS,
+  hasNoEvents
+})
+
 export const fetchEventsFor = (userId, token) => (
   async function (dispatch) {
     const service = new EventService(userId, token, 'http://localhost:3000')
@@ -45,6 +50,8 @@ export const fetchEventsFor = (userId, token) => (
       }))
       dispatch(addEventLists(eventsList))
       dispatch(saveAllEvents(events))
+      // TODO: set variable if events.length are === 0
+      if (events.length === 0) dispatch(userHasNoEvents(true))
     } catch (e) {
       console.log(e)
     }
@@ -104,7 +111,14 @@ export const confirmEvent = (confirmed, invitationId) =>
       })
       if (!response.ok) throw await response.json()
       const invitation = await response.json()
-      if (invitation.confirmed) dispatch(addCreatedEvent(invitation.event))
+      if (invitation.confirmed) {
+        dispatch(addCreatedEvent(invitation.event))
+        console.log(invitation.event)
+        dispatch(appendToEventLists({
+          eventId: invitation.event.id,
+          items: invitation.event.events_lists
+        }))
+      }
       delete invitation.event
       dispatch(updateInvite(invitation))
     } catch (e) {
