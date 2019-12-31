@@ -29,6 +29,11 @@ export const updateEventLists = (eventsListItem) => ({
   eventsListItem
 })
 
+export const appendToEventLists = (eventsListItem) => ({
+  type: Types.APPEND_TO_EVENTS_LISTS,
+  eventsListItem
+})
+
 export const fetchEventsFor = (userId, token) => (
   async function (dispatch) {
     const service = new EventService(userId, token, 'http://localhost:3000')
@@ -51,6 +56,10 @@ export const createNewEventFor = (userId, token, event) => console.log('in here'
     const service = new EventService(userId, token, 'http://localhost:3000')
     const createdEvent = await service.createNewEvent(event)
     dispatch(addCreatedEvent(createdEvent))
+    dispatch(appendToEventLists({
+      eventId: createdEvent.id,
+      items: createdEvent.events_lists
+    }))
   }
 
 export const updateYelpItems = (items) => ({

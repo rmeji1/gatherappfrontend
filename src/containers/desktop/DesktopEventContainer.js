@@ -42,6 +42,7 @@ const DesktopEventContainer = (props) => {
           yelpItems={yelpItems}
           id={event.id}
           invitees={event.invitations.map(invite => invite.user_id)}
+          eventsList={eventsList}
         />
       </Responsive>
       <Responsive minWidth={Responsive.onlyComputer.minWidth}>

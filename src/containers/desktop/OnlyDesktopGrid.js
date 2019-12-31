@@ -61,7 +61,6 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees, e
                     </Card>
                   ))
                 }
-                
               </Segment>
             </Segment.Group>
           </Grid.Column>

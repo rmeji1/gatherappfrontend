@@ -14,7 +14,8 @@ const initialState = {
   activePage: 1,
   yelpItemsTotalCount: 0,
   invitations: [],
-  eventsList: []
+  eventsList: [],
+  sessionId: window.localStorage.getItem('sessionId')
 }
 
 const isLogin = (state = initialState.isLogin, action) => {
@@ -164,6 +165,17 @@ const eventsList = (state = initialState.eventsList, action) => {
         }
         return eventsList
       })
+    case Types.APPEND_TO_EVENTS_LISTS:
+      return [...state, action.eventsListItem]
+    default:
+      return state
+  }
+}
+
+export const sessionId = (state = initialState.sessionId, action) => {
+  switch (action.type) {
+    case Types.ADD_SESSION_ID:
+      return action.sessionId
     default:
       return state
   }
@@ -182,5 +194,6 @@ export default combineReducers({
   activePage,
   yelpItemsTotalCount,
   invitations,
-  eventsList
+  eventsList,
+  sessionId
 })
