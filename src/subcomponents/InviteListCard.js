@@ -1,12 +1,12 @@
 import React from 'react'
 import { Card, Grid, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { inviteUser } from '../redux/actions'
+import { inviteUser } from '../redux/EventActions'
 
-const InviteListCard = ({ contacts, inviteUser, eventId, invitees, token }) =>
+const InviteListCard = ({ contacts, inviteUser, eventId, invitees }) =>
   <Card.Group>
     {contacts.map(contact => (
-      <Card key={contact.username} onClick={() => inviteUser(eventId, contact.id, token)}>
+      <Card key={contact.username} onClick={() => inviteUser(eventId, contact.id)}>
         <Card.Content>
           <Card.Header>
             <Grid>
@@ -25,9 +25,5 @@ const InviteListCard = ({ contacts, inviteUser, eventId, invitees, token }) =>
     ))}
   </Card.Group>
 
-const mapStateToProps = (state, ownProps) => ({
-  ...ownProps,
-  token: state.authProps.token
-})
 
-export default connect(mapStateToProps, { inviteUser })(InviteListCard)
+export default connect(null, { inviteUser })(InviteListCard)

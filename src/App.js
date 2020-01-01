@@ -17,7 +17,7 @@ class App extends Component {
     const { userId, userToken } = this.props
     if (userId && userToken) {
       this.props.showUser()
-      subscribeUser(userId)
+      if (navigator.serviceWorker) subscribeUser(userId)
     }
   }
 

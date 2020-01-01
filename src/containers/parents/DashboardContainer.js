@@ -8,7 +8,7 @@ import { addContactRemote, closeAddContactModal } from '../../redux/ContactActio
 import { Redirect } from 'react-router-dom'
 
 class DashboardContainer extends React.Component {
-  componentDidMount = () => this.props.fetchEventsFor(this.props.userId, this.props.token)
+  componentDidMount = () => this.props.fetchEventsFor()
   render = () => <ResponsiveContainer {...this.props} />
 }
 
@@ -28,15 +28,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getSessionId: (token) => dispatch(getSessionId(token)),
-    createNewEventFor: (userId, token, event) => dispatch(createNewEventFor(userId, token, event)),
+    createNewEventFor: (event) => dispatch(createNewEventFor(event)),
     closeSideBar: () => dispatch(closeSideBar()),
     openSideBar: () => dispatch(openSideBar()),
     closeNewEventModal: () => {
       dispatch(closeNewEventModal())
       dispatch(closeSideBar())
     },
-    fetchEventsFor: (userId, token) => dispatch(fetchEventsFor(userId, token)),
-    addContactRemote: (userId, ownerId, token) => dispatch(addContactRemote(userId, ownerId, token)),
+    fetchEventsFor: () => dispatch(fetchEventsFor()),
+    addContactRemote: (userId) => dispatch(addContactRemote(userId)),
     closeAddContactModal: () => dispatch(closeAddContactModal())
   }
 }

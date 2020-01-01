@@ -13,18 +13,19 @@ export const closeAddContactModal = () => ({
   type: Type.CLOSE_ADD_CONTACT_MODAL
 })
 
-export const addContactRemote = (userId, ownerId, token) => console.log(userId, ownerId, token) ||
-  async function (dispatch) {
-    const response = await fetch(`http://localhost:3000/contacts`, { //eslint-disable-line 
+export const addContactRemote = (userId) =>
+  async function (dispatch, getState, api) {
+    const authProps = getState().authProps
+    const response = await fetch(`${api}/contacts`, { //eslint-disable-line 
       method: 'POST',
       headers: {
-        Authorization: token,
+        Authorization: authProps.token,
         'content-type': 'application/json',
         Accept: 'application/json'
       },
       body: JSON.stringify({
         user_id: userId,
-        owner_id: ownerId
+        owner_id: authProps.user_id
       })
     })
     if (!response.ok) throw await response.json()

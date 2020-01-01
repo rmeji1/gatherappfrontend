@@ -13,7 +13,7 @@ const MyContactsModal = (props) =>
           <SearchForUsers
             user={props.user}
             token={props.token}
-            addContactRemote={(userId) => props.addContactRemote(userId, props.userId, props.token)}
+            addContactRemote={(userId) => props.addContactRemote(userId)}
           />
         </Grid.Column>
       </Grid>

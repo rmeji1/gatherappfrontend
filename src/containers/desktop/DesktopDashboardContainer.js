@@ -29,9 +29,10 @@ export class DesktopDashboardContainer extends Component {
   }
 
   handleNewUserMessage = async (newMessage) => {
-    const { sessionId, getSessionId, token, userId } = this.props
+    const { sessionId, getSessionId, token } = this.props
     try {
-      if (!sessionId) { 
+      if (!sessionId) {
+        console.log('getting a session')
         this.setState({ savedMessage: newMessage }, () => getSessionId(token))
         return
       }
@@ -54,21 +55,21 @@ export class DesktopDashboardContainer extends Component {
         if (message.text === 'Please wait while we create this event for you!') {
           const title = messages.message.context.skills['main skill'].user_defined.title
           const description = messages.message.context.skills['main skill'].user_defined.description || ''
-          this.props.createNewEventFor(userId, token, { title, description })
+          this.props.createNewEventFor({ title, description })
         }
       })
     } catch (e) {
-      if (e.need_new_session) this.setState({ savedMessage: newMessage }, () => getSessionId(token))
+      console.log('getting a session')
+      this.setState({ savedMessage: newMessage }, () => getSessionId(token))
     }
   }
 
   handleChange = (event) => this.setState({ [event.target.name]: event.target.value })
 
   handleGatherSubmission = () => {
-    const { userId, token } = this.props
     const { title, description } = this.state
     this.props.closeNewEventModal()
-    this.props.createNewEventFor(userId, token, { title, description })
+    this.props.createNewEventFor({ title, description })
     this.setState({ title: '', description: '' })
   }
 

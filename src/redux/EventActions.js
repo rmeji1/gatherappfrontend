@@ -1,5 +1,6 @@
 import * as Types from './actionTypes'
 import EventService from '../services/EventService'
+import { InviteService } from '../services/InviteService'
 
 export const saveAllEvents = (events) => ({
   type: Types.SAVE_EVENTS,
@@ -39,9 +40,27 @@ export const userHasNoEvents = (hasNoEvents) => ({
   hasNoEvents
 })
 
-export const fetchEventsFor = (userId, token) => (
-  async function (dispatch) {
-    const service = new EventService(userId, token, 'http://localhost:3000')
+export const addInvite = (invite) => ({
+  type: Types.INVITE_USER,
+  invite
+})
+
+export const inviteUser = (eventId, contactId) =>
+  async function (dispatch, getState, api) {
+    try {
+      const token = getState().token
+      const service = new InviteService(api, token)
+      const invite = await service.inviteUser(eventId, contactId)
+      dispatch(addInvite(invite))
+    } catch (e) {
+      console.log(e)
+    }
+}
+
+export const fetchEventsFor = () =>
+  async function (dispatch, getState, api) {
+    const authProps = getState().authProps
+    const service = new EventService(authProps.user_id, authProps.token, api)
     try {
       const events = await service.fetchAllEvents()
       const eventsList = events.map((event) => ({
@@ -50,17 +69,16 @@ export const fetchEventsFor = (userId, token) => (
       }))
       dispatch(addEventLists(eventsList))
       dispatch(saveAllEvents(events))
-      // TODO: set variable if events.length are === 0
       if (events.length === 0) dispatch(userHasNoEvents(true))
     } catch (e) {
       console.log(e)
     }
   }
-)
 
-export const createNewEventFor = (userId, token, event) => console.log('in here') ||
-  async function (dispatch) {
-    const service = new EventService(userId, token, 'http://localhost:3000')
+export const createNewEventFor = (event) => console.log('in here') ||
+  async function (dispatch, getState, api) {
+    const authProps = getState().authProps
+    const service = new EventService(authProps.user_id, authProps.token, api)
     const createdEvent = await service.createNewEvent(event)
     dispatch(addCreatedEvent(createdEvent))
     dispatch(appendToEventLists({
@@ -80,9 +98,9 @@ export const updateYelpItemsTotalCount = (yelpItemsTotalCount) => ({
 })
 
 export const updateYelpItemsThunk = (categories, offset, location, Authorization) =>
-  async function (dispatch) {
+  async function (dispatch, _, api) {
     const limit = 12
-    const response = await fetch(`http://localhost:3000/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`, { headers: {Authorization}}) //eslint-disable-line
+    const response = await fetch(`${api}/yelp/index?offset=${offset}&limit=${limit}&categories=${categories}&location=${location}`, { headers: {Authorization}}) //eslint-disable-line
     const items = await response.json()
     dispatch(updateYelpItems(items.businesses))
     dispatch(updateYelpItemsTotalCount(items.total))
@@ -99,11 +117,13 @@ export const updateInvite = (invitation) => ({
 })
 
 export const confirmEvent = (confirmed, invitationId) =>
-  async function (dispatch) {
+  async function (dispatch, getState, api) {
     try {
-      const response = await fetch(`http://localhost:3000/invitations/${invitationId}`, { //eslint-disable-line 
+      const authProps = getState().authProps
+      const response = await fetch(`${api}/invitations/${invitationId}`, { //eslint-disable-line 
         method: 'PATCH',
         headers: {
+          Authorization: authProps.token,
           'content-type': 'application/json',
           Accept: 'application/json'
         },
@@ -126,10 +146,11 @@ export const confirmEvent = (confirmed, invitationId) =>
     }
   }
 
-export const addToEventsList = (yelpItem, start_time, end_time, eventId, token) => //eslint-disable-line
-  async function (dispatch) {
+export const addToEventsList = (yelpItem, start_time, end_time, eventId) => //eslint-disable-line
+  async function (dispatch, getState, api) {
     try {
-      const service = new EventService(null, token, 'http://localhost:3000')
+      const token = getState().authProps.token
+      const service = new EventService(null, token, api)
       const newEventListItem = await service.addToEventsList(yelpItem, start_time, end_time, eventId)
       dispatch(updateEventLists(newEventListItem))
     } catch (e) {

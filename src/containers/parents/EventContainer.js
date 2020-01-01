@@ -25,7 +25,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getEvents: (userId, token) => dispatch(fetchEventsFor(userId, token)),
+  getEvents: () => dispatch(fetchEventsFor()),
   changeActivePageTo: (newPage) => dispatch(changeActivePageTo(newPage))
 })
 
