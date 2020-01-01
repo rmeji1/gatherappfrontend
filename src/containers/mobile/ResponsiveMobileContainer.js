@@ -14,7 +14,7 @@ class MobileContainer extends Component {
 
   handleToggle = () => this.setState({ sidebarOpened: true })
 
-  render() {
+  render () {
     const { children } = this.props
     const { sidebarOpened } = this.state
 
@@ -28,7 +28,6 @@ class MobileContainer extends Component {
           as={Menu}
           animation='push'
           direction='right'
-          // inverted
           onHide={this.handleSidebarHide}
           vertical
           visible={sidebarOpened}
@@ -44,7 +43,7 @@ class MobileContainer extends Component {
           >
             <Container>
               <Menu inverted pointing secondary size='large'>
-                <Link to='/'><Menu.Item header content="Gather" /></Link>
+                <Link to='/'><Menu.Item header content='Gather' /></Link>
                 <Menu.Item position='right' onClick={this.handleToggle}>
                   <Icon name='sidebar' />
                 </Menu.Item>

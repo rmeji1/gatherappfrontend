@@ -1,15 +1,23 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Search, Grid, Card, Responsive } from 'semantic-ui-react'
+import { Search, Grid, Card, Responsive, Pagination } from 'semantic-ui-react'
 import categories from '../containers/categories.json'
 import { mapYelpToCardItems } from '../Helpers/HelpFunctions'
-import { updateYelpItemsThunk } from '../redux/EventActions'
+import { updateYelpItemsThunk, changeActivePageTo } from '../redux/EventActions'
+import TimeModal from './TimeModal'
 
-const initialState = { isLoading: false, results: [], value: '', alias: '' }
+const initialState = { isLoading: false, results: [], value: '', alias: '', isVisible: false, yelpId: '' }
+const onPageChange = (event, { activePage }, changeActivePageTo) => {
+  changeActivePageTo(activePage)
+  console.log(activePage)
+}
 
 class SearchExampleCategory extends Component {
   state = initialState // eslint-disable-line
+
+  setVisible = (isVisible) => this.setState({ isVisible })
+  setYelpId = (yelpId) => this.setState({ yelpId })
 
   componentDidUpdate (prevProps, prevState) {
     if (this.props.activePage !== prevProps.activePage) {
@@ -47,32 +55,65 @@ class SearchExampleCategory extends Component {
     const { isLoading, value, results } = this.state
 
     return (
-      <Grid stackable>
-        <Grid.Row stretched>
-          <Grid.Column width='16' textAlign='center'>
-            <Search
-              aligned='right'
-              size={this.props.size}
-              loading={isLoading}
-              onResultSelect={(event, result) => this.handleResultSelect(event, result)}
-              onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                leading: true
-              })}
-              results={results}
-              value={value}
-            />
-          </Grid.Column>
-          <Grid.Column float='left'>
-            <Responsive getWidth={getWidth} maxWidth={430}>
-              <Card.Group items={mapYelpToCardItems(this.props.items)} />
-            </Responsive>
-            <Responsive getWidth={getWidth} minWidth={431} maxWidth={Responsive.onlyMobile.maxWidth}>
-              <Card.Group itemsPerRow={2} items={mapYelpToCardItems(this.props.items)} />
-            </Responsive>
-          </Grid.Column>
-        </Grid.Row>
+      <>
+        <Grid stackable>
+          <Grid.Row stretched>
+            <Grid.Column width='16' textAlign='center'>
+              <Search
+                aligned='right'
+                size={this.props.size}
+                loading={isLoading}
+                onResultSelect={(event, result) => this.handleResultSelect(event, result)}
+                onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                  leading: true
+                })}
+                results={results}
+                value={value}
+              />
+            </Grid.Column>
+            <Grid.Column textAlign='center'>
+              <Grid.Column verticalAlign='middle' width={8}>
+                <Pagination
+                  boundaryRange={0}
+                  defaultActivePage={1}
+                  ellipsisItem={null}
+                  firstItem={null}
+                  lastItem={null}
+                  siblingRange={1}
+                  totalPages={this.props.yelpItemsTotalCount / 12}
+                  onPageChange={(event, data) => onPageChange(event, data, this.props.changeActivePageTo)}
+                />
+              </Grid.Column>
+            </Grid.Column>
 
-      </Grid>
+            <Grid.Column float='left'>
+              <Responsive getWidth={getWidth} maxWidth={430}>
+                <Card.Group
+                  items={mapYelpToCardItems(this.props.items, (yelpId) => {
+                    this.setYelpId(yelpId)
+                    this.setVisible(true)
+                  })}
+                />
+              </Responsive>
+              <Responsive getWidth={getWidth} minWidth={431} maxWidth={Responsive.onlyMobile.maxWidth}>
+                <Card.Group
+                  itemsPerRow={2}
+                  items={mapYelpToCardItems(this.props.items, (yelpId) => {
+                    this.setYelpId(yelpId)
+                    this.setVisible(true)
+                  })}
+                />
+              </Responsive>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <TimeModal
+          open={this.state.isVisible}
+          onClose={() => this.setVisible(false)}
+          yelpItem={this.props.items.find((item) => item.id === this.state.yelpId)}
+          eventId={this.props.id}
+        />
+      </>
     )
   }
 }
@@ -81,11 +122,13 @@ const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
   items: state.yelpItems,
   activePage: state.activePage,
-  token: state.authProps.token
+  token: state.authProps.token,
+  yelpItemsTotalCount: state.yelpItemsTotalCount
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateYelpItemsThunk: (value, offset, location, token) => dispatch(updateYelpItemsThunk(value, offset, location, token))
+  updateYelpItemsThunk: (value, offset, location, token) => dispatch(updateYelpItemsThunk(value, offset, location, token)),
+  changeActivePageTo: (newPage) => dispatch(changeActivePageTo(newPage))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(SearchExampleCategory)
 

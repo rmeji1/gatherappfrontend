@@ -4,7 +4,7 @@ import { mapYelpToCardItems } from '../../Helpers/HelpFunctions'
 import InviteListCard from '../../subcomponents/InviteListCard'
 import SearchCategory from '../../subcomponents/SearchCategory'
 import TimeModal from '../../subcomponents/TimeModal'
-
+import EventListsContainer from '../parents/EventListsContainer'
 export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees, eventsList }) => {
   const [isVisible, setVisible] = useState(false)
   const [yelpId, setYelpId] = useState('')
@@ -20,13 +20,11 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees, e
                 meta={cardInfo.meta}
                 fluid={cardInfo.fluid}
               />
-              {/* <Segment.Group style={{ marginTop: '1em' }}> */}
               <Segment>
                 <Header as='h3' textAlign='center' content='Gather I.L.' />
                 <InviteListCard eventId={id} contacts={contacts} invitees={invitees} />
               </Segment>
             </Segment.Group>
-            {/* </Segment.Group> */}
           </Grid.Column>
           <Grid.Column width={10}>
             <Segment.Group raised>
@@ -45,24 +43,7 @@ export const OnlyDesktopGrid = ({ cardInfo, contacts, yelpItems, id, invitees, e
             </Segment.Group>
           </Grid.Column>
           <Grid.Column width={3}>
-            <Segment.Group>
-              <Segment textAlign='center'>
-                <Header as='h3' content='Gather I.T' />
-                {
-                  eventsList.items.map((item) => (
-                    <Card key={`event-list-item${item.id}`}>
-                      <Card.Content>
-                        <Card.Header>{item.name}</Card.Header>
-                        <Card.Description>{item.address}</Card.Description>
-                      </Card.Content>
-                      <Card.Content extra>
-                        {item.start_time} - {item.end_time}
-                      </Card.Content>
-                    </Card>
-                  ))
-                }
-              </Segment>
-            </Segment.Group>
+            <EventListsContainer eventsList={eventsList} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
