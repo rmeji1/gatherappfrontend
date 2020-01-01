@@ -7,16 +7,16 @@ import { Switch, Route } from 'react-router-dom'
 import PrivateRoute from './subcomponents/PrivateRoute'
 import DashboardContainer from './containers/parents/DashboardContainer'
 import EventContainer from './containers/parents/EventContainer'
-import { showUser } from './redux/userActionCreator'
+import { showUser } from './redux/UserActions'
 import { subscribeUser } from './subscription'
 
 // import { addCreatedEvent } from './redux/EventActions'
 class App extends Component {
   componentDidMount () {
-    navigator.serviceWorker.addEventListener('message', this.handleMessage)
+    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', this.handleMessage)
     const { userId, userToken } = this.props
     if (userId && userToken) {
-      this.props.showUser(userId, userToken)
+      this.props.showUser()
       subscribeUser(userId)
     }
   }
@@ -51,7 +51,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToState = dispatch => ({
-  showUser: (userId, userToken) => dispatch(showUser(userId, userToken)),
+  showUser: () => dispatch(showUser()),
   dispatch
 })
 

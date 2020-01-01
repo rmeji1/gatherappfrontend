@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 const EventContainer = (props) => {
   useEffect(() => {
     const { getEvents, userId, token } = props
-    getEvents(userId, token)
+    getEvents(userId, token) // eslint-disable-next-line
   }, [])
   return <ResponsiveContainer {...props} />
 }

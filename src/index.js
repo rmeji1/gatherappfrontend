@@ -10,8 +10,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import 'semantic-ui-less/semantic.less'
 const middleware = compose(
-  applyMiddleware(thunk),
-  (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() : (f => f))
+  applyMiddleware(thunk.withExtraArgument('http://192.168.0.27:3000')),
+  // (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() : (f => f))
 )
 
 const store = createStore(reducers, middleware)

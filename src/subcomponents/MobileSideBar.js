@@ -2,7 +2,8 @@ import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { closeSideBar, openSideBar } from '../redux/actions'
-import { Responsive, Sidebar, Menu, Container, Icon, Portal, Segment, Card, Label } from 'semantic-ui-react'
+import { logout } from '../redux/UserActions'
+import { Responsive, Sidebar, Menu, Container, Icon, Portal, Segment, Label } from 'semantic-ui-react'
 import { openNewEventModal } from '../redux/EventActions'
 import { openAddContactModal } from '../redux/ContactActions'
 
@@ -41,7 +42,7 @@ const MobileSideBar = ({ isHidden, dispatch, children, invitations }) => {
         <Menu.Item content='New Gathering' onClick={() => dispatch(openNewEventModal())} />
         <Menu.Item name='my contacts' onClick={() => dispatch(openAddContactModal())} />
         
-        <Menu.Item onClick={() => console.log('pressed logout')} content='Log Out' />
+        <Menu.Item onClick={() => dispatch(logout())} content='Log Out' />
       </Sidebar>
       <Sidebar.Pusher dimmed={!isHidden}>
         <Container style={{ minHeight: '95vh' }}>

@@ -58,7 +58,7 @@ const events = (state = initialState.events, action) => {
       if (event) return state
       return [...state, action.event]
     case Types.INVITE_USER:
-      return state.map(event => event.id === action.invite.event.id ? action.invite.event : event) 
+      return state.map(event => event.id === action.invite.event.id ? action.invite.event : event)
     default:
       return state
   }

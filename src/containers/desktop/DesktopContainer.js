@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Responsive, Visibility, Segment, Menu, Container, Grid, Header, List, Divider, Image } from 'semantic-ui-react'
+import { Responsive, Visibility, Segment, Menu, Container, List, Divider, Image } from 'semantic-ui-react'
 import HomepageHeading from '../../subcomponents/HomepageHeading'
 
 class DesktopContainer extends Component {
