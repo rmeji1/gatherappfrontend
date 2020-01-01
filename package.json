@@ -20,8 +20,8 @@
     "util": "^0.12.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "npm start",
+    "build": "npm build",
     "test": "craco test",
     "eject": "craco eject"
   },
