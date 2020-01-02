@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from 'semantic-ui-react'
 import EventConfirmationExtraContent from '../subcomponents/EventConfirmationExtraContent'
 export const mapEventsToCardItems = (events) => events.map(event => ({
+  creatorId: event.creator_id,
   header: event.title,
   description: event.description,
   meta: `Created by: ${event.creator_name}`,

@@ -32,9 +32,9 @@ const authProps = (state = initialState.authProps, action) => {
   switch (action.type) {
     case Types.ADD_AUTH_PROPS:
       return action.authProps
-    case Types.LOGOUT_USER:
-      window.localStorage.removeItem('authProps')
-      return null
+    // case Types.LOGOUT_USER:
+    //   window.localStorage.removeItem('authProps')
+    //   return null
     default:
       return state
   }
@@ -191,7 +191,7 @@ export const hasNoEvents = (state = initialState.hasNoEvents, action) => {
   }
 }
 
-export default combineReducers({
+const appReducer = combineReducers({
   loginErrors,
   isLogin,
   authProps,
@@ -208,3 +208,12 @@ export default combineReducers({
   sessionId,
   hasNoEvents
 })
+
+export default (state, action) => {
+  if (action.type === Types.LOGOUT_USER) {
+    window.localStorage.removeItem('authProps')
+    window.localStorage.removeItem('sessionId')
+    state = undefined
+  }
+  return appReducer(state, action)
+}

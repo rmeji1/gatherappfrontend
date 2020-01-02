@@ -3,6 +3,7 @@ import MobileDashboardContainer from '../mobile/MobileDashboardContainer'
 import { connect } from 'react-redux'
 import DesktopDashboardContainer from '../desktop/DesktopDashboardContainer'
 import { createNewEventFor, closeNewEventModal, fetchEventsFor } from '../../redux/EventActions'
+import { showUser } from '../../redux/UserActions'
 import { openSideBar, closeSideBar, getSessionId } from '../../redux/actions'
 import { addContactRemote, closeAddContactModal } from '../../redux/ContactActions'
 import { Redirect } from 'react-router-dom'
@@ -84,7 +85,11 @@ class DashboardContainer extends React.Component {
     }
   }
 
-  componentDidMount = () => this.props.fetchEventsFor()
+  componentDidMount = () => {
+    if (!this.props.user) this.props.showUser()
+    this.props.fetchEventsFor()
+  }
+
   render = () => {
     const { isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote, user } = this.props
     const { title, description } = this.state
@@ -143,7 +148,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchEventsFor: () => dispatch(fetchEventsFor()),
     addContactRemote: (userId) => dispatch(addContactRemote(userId)),
-    closeAddContactModal: () => dispatch(closeAddContactModal())
+    closeAddContactModal: () => dispatch(closeAddContactModal()),
+    showUser: () => dispatch(showUser())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)

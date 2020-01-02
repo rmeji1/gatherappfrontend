@@ -10,7 +10,10 @@ export class DesktopDashboardContainer extends Component {
       <DesktopMenuContainer>
         <Transition.Group as={Card.Group} centered itemsPerRow={4} animation='fly left'>
           {mapEventsToCardItems(this.props.events).map(event =>
-            <Card fluid as={Link} to={event.to} key={`card-${event.header}`} header={event.header} description={event.description} />)}
+            <Card
+              fluid
+              color={event.creatorId === this.props.userId ? 'yellow' : 'red'}
+              as={Link} to={event.to} key={`card-${event.header}`} header={event.header} description={event.description} />)}
         </Transition.Group>
       </DesktopMenuContainer>
     )

@@ -8,6 +8,7 @@ import DesktopEventContainer from '../desktop/DesktopEventContainer'
 import { withRouter } from 'react-router-dom'
 import MyContactsModal from '../modals/MyContactsModal'
 import NewEventModal from '../modals/NewEventModal'
+import { showUser } from '../../redux/UserActions'
 
 class EventContainer extends React.Component {
   state = {
@@ -34,6 +35,7 @@ class EventContainer extends React.Component {
   }
 
   componentDidMount = () => {
+    if (!this.props.user) this.props.showUser()
     const { getEvents, userId, token } = this.props
     getEvents(userId, token) // eslint-disable-next-line
   }
@@ -45,22 +47,22 @@ class EventContainer extends React.Component {
       <>
         <ResponsiveContainer {...this.props} />
         <NewEventModal
-            isNewEventModalShown={isNewEventModalShown}
-            title={title}
-            description={description}
-            closeNewEventModal={closeNewEventModal}
-            onHandleChange={this.handleChange}
-            onHandleGatherSubmission={this.handleGatherSubmission}
-          />
-          <MyContactsModal
-            user={user}
-            isContactModalHidden={isContactModalHidden}
-            addContactRemote={addContactRemote}
-            contacts={this.contactsIfNullOrEmpty()}
-            closeAddContactModal={closeAddContactModal}
-            userId={this.props.userId}
-            token={this.props.token}
-          />
+          isNewEventModalShown={isNewEventModalShown}
+          title={title}
+          description={description}
+          closeNewEventModal={closeNewEventModal}
+          onHandleChange={this.handleChange}
+          onHandleGatherSubmission={this.handleGatherSubmission}
+        />
+        <MyContactsModal
+          user={user}
+          isContactModalHidden={isContactModalHidden}
+          addContactRemote={addContactRemote}
+          contacts={this.contactsIfNullOrEmpty()}
+          closeAddContactModal={closeAddContactModal}
+          userId={this.props.userId}
+          token={this.props.token}
+        />
       </>
     )
   }
@@ -90,6 +92,7 @@ const mapDispatchToProps = dispatch => ({
   closeAddContactModal: () => dispatch(closeAddContactModal()),
   addContactRemote: (userId) => dispatch(addContactRemote(userId)),
   createNewEventFor: (event) => dispatch(createNewEventFor(event)),
+  showUser: () => dispatch(showUser())
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventContainer))

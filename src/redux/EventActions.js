@@ -48,7 +48,7 @@ export const addInvite = (invite) => ({
 export const inviteUser = (eventId, contactId) =>
   async function (dispatch, getState, api) {
     try {
-      const token = getState().token
+      const token = getState().authProps.token
       const service = new InviteService(api, token)
       const invite = await service.inviteUser(eventId, contactId)
       dispatch(addInvite(invite))

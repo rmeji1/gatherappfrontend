@@ -15,7 +15,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 function sendSubscription(subscription, userId) {
-  return fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/notifications/create`, {
+  return fetch(`https://gatherapp-flatiron.herokuapp.com/users/${userId}/notifications/create`, {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
