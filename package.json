@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build && cra-append-sw --skip-compile ./public/custom-sw.js",
     "test": "craco test",
     "eject": "craco eject"
   },
