@@ -10,7 +10,6 @@ import EventContainer from './containers/parents/EventContainer'
 import { showUser } from './redux/UserActions'
 import { subscribeUser } from './subscription'
 
-// import { addCreatedEvent } from './redux/EventActions'
 class App extends Component {
   componentDidMount () {
     if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', this.handleMessage)
@@ -22,7 +21,8 @@ class App extends Component {
   }
 
   handleMessage = (event) => {
-    if (event.origin !== 'http://localhost:3001') return
+    if (event.origin !== 'http://localhost:3001' 
+        && event.origin !== 'https://gatherapp-flatiron.herokuapp.com') return
     const action = JSON.parse(event.data)
     console.log(action)
     const { userId } = this.props

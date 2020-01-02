@@ -73,16 +73,18 @@ class SearchExampleCategory extends Component {
             </Grid.Column>
             <Grid.Column textAlign='center'>
               <Grid.Column verticalAlign='middle' width={8}>
-                <Pagination
-                  boundaryRange={0}
-                  defaultActivePage={1}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  siblingRange={1}
-                  totalPages={this.props.yelpItemsTotalCount / 12}
-                  onPageChange={(event, data) => onPageChange(event, data, this.props.changeActivePageTo)}
-                />
+              <Responsive maxWidth={767}>
+                  <Pagination
+                    boundaryRange={0}
+                    defaultActivePage={1}
+                    ellipsisItem={null}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={1}
+                    totalPages={this.props.yelpItemsTotalCount / 12}
+                    onPageChange={(event, data) => onPageChange(event, data, this.props.changeActivePageTo)}
+                  />
+                </Responsive>
               </Grid.Column>
             </Grid.Column>
 

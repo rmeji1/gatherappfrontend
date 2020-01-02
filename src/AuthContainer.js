@@ -53,7 +53,7 @@ class AuthContainer extends Component {
                     name='username'
                     icon='user'
                     iconPosition='left'
-                    placeholder='E-mail address'
+                    placeholder='Username'
                     value={username}
                     onChange={this.handleOnChange}
                   />

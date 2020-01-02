@@ -1,16 +1,69 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import MobileEventContainer from '../mobile/MobileEventContainer'
-import { fetchEventsFor, changeActivePageTo } from '../../redux/EventActions'
+import { fetchEventsFor, changeActivePageTo, createNewEventFor, closeNewEventModal } from '../../redux/EventActions'
+import { closeSideBar } from '../../redux/actions'
+import { addContactRemote, closeAddContactModal } from '../../redux/ContactActions'
 import { connect } from 'react-redux'
 import DesktopEventContainer from '../desktop/DesktopEventContainer'
 import { withRouter } from 'react-router-dom'
+import MyContactsModal from '../modals/MyContactsModal'
+import NewEventModal from '../modals/NewEventModal'
 
-const EventContainer = (props) => {
-  useEffect(() => {
-    const { getEvents, userId, token } = props
+class EventContainer extends React.Component {
+  state = {
+    title: '',
+    description: ''
+  } 
+
+  handleChange = (event) => this.setState({ [event.target.name]: event.target.value })
+
+  handleGatherSubmission = () => {
+    const { title, description } = this.state
+    this.props.closeNewEventModal()
+    this.props.createNewEventFor({ title, description })
+    this.setState({ title: '', description: '' })
+  }
+
+  contactsIfNullOrEmpty = () => {
+    if (this.props.user) {
+      if (this.props.user.contacts && this.props.user.contacts.length !== 0) {
+        return this.props.user.contacts.map(contact => ({ header: contact.username }))
+      }
+    }
+    return [{ header: 'Please use search to add...' }]
+  }
+
+  componentDidMount = () => {
+    const { getEvents, userId, token } = this.props
     getEvents(userId, token) // eslint-disable-next-line
-  }, [])
-  return <ResponsiveContainer {...props} />
+  }
+
+  render = () => {
+    const { isNewEventModalShown, closeNewEventModal, closeAddContactModal, isContactModalHidden, addContactRemote, user } = this.props
+    const { title, description } = this.state
+    return (
+      <>
+        <ResponsiveContainer {...this.props} />
+        <NewEventModal
+            isNewEventModalShown={isNewEventModalShown}
+            title={title}
+            description={description}
+            closeNewEventModal={closeNewEventModal}
+            onHandleChange={this.handleChange}
+            onHandleGatherSubmission={this.handleGatherSubmission}
+          />
+          <MyContactsModal
+            user={user}
+            isContactModalHidden={isContactModalHidden}
+            addContactRemote={addContactRemote}
+            contacts={this.contactsIfNullOrEmpty()}
+            closeAddContactModal={closeAddContactModal}
+            userId={this.props.userId}
+            token={this.props.token}
+          />
+      </>
+    )
+  }
 }
 
 const mapStateToProps = state => ({
@@ -21,12 +74,22 @@ const mapStateToProps = state => ({
   contacts: state.user ? state.user.contacts : [],
   activePage: state.activePage,
   yelpItemsTotalCount: state.yelpItemsTotalCount,
-  eventsLists: state.eventsList
+  eventsLists: state.eventsList,
+  user: state.user,
+  isNewEventModalShown: state.isNewEventModalShown,
+  isContactModalHidden: state.isContactModalHidden
 })
 
 const mapDispatchToProps = dispatch => ({
   getEvents: () => dispatch(fetchEventsFor()),
-  changeActivePageTo: (newPage) => dispatch(changeActivePageTo(newPage))
+  changeActivePageTo: (newPage) => dispatch(changeActivePageTo(newPage)),
+  closeNewEventModal: () => {
+    dispatch(closeNewEventModal())
+    dispatch(closeSideBar())
+  },
+  closeAddContactModal: () => dispatch(closeAddContactModal()),
+  addContactRemote: (userId) => dispatch(addContactRemote(userId)),
+  createNewEventFor: (event) => dispatch(createNewEventFor(event)),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventContainer))
