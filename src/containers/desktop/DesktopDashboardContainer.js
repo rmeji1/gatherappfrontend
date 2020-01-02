@@ -36,7 +36,7 @@ export class DesktopDashboardContainer extends Component {
         this.setState({ savedMessage: newMessage }, () => getSessionId(token))
         return
       }
-      const response = await fetch('http://localhost:3000/assistant/create', { //eslint-disable-line
+      const response = await fetch('https://gatherapp-flatiron.herokuapp.com/assistant/create', { //eslint-disable-line
         method: 'POST',
         headers: {
           Authorization: token,
@@ -60,7 +60,7 @@ export class DesktopDashboardContainer extends Component {
       })
     } catch (e) {
       console.log('getting a session')
-      this.setState({ savedMessage: newMessage }, () => getSessionId(token))
+      if (e.need_new_session) this.setState({ savedMessage: newMessage }, () => getSessionId(token))
     }
   }
 

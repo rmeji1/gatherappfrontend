@@ -21,7 +21,7 @@ export class SearchForUsers extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
     setTimeout(async () => {
-      const response = await fetch(`http://localhost:3000/users?query=${value}`, { headers: { Authorization: this.props.token } }) //eslint-disable-line
+      const response = await fetch(`https://gatherapp-flatiron.herokuapp.com/users?query=${value}`, { headers: { Authorization: this.props.token } }) //eslint-disable-line
       const results = await response.json()
       const contacts = this.props.user.contacts.map((contact) => contact.id)
       const mappedResults = results.filter((result) => result.id !== this.props.user.id && !contacts.includes(result.id)).map((result) => ({ title: result.username, id: result.id }))

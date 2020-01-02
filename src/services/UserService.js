@@ -1,11 +1,10 @@
 class UserService {
   constructor (url) {
-    console.log(url)
     this.url = url
   }
 
   async createUser (user) {
-    const response = await fetch('http://localhost:3000/users', { //eslint-disable-line 
+    const response = await fetch(`${this.url}/users`, { //eslint-disable-line 
       method: 'POST',
       headers: {
         'content-type': 'application/json',

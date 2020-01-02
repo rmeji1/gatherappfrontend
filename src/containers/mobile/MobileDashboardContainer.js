@@ -15,7 +15,7 @@ class MobileDashboardContainer extends React.Component {
     widgetOpen: false
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidUpdate = (prevProps) => {
     if (this.props.hasNoEvents && !this.state.widgetOpen) {
       toggleWidget()
       addResponseMessage("Hey, looks like you don't have any Gatherings yet.")
@@ -31,11 +31,11 @@ class MobileDashboardContainer extends React.Component {
   handleNewUserMessage = async (newMessage) => {
     const { sessionId, getSessionId, token } = this.props
     try {
-      if (!sessionId) { 
+      if (!sessionId) {
         this.setState({ savedMessage: newMessage }, () => getSessionId(token))
         return
       }
-      const response = await fetch('http://localhost:3000/assistant/create', { //eslint-disable-line
+      const response = await fetch('https://gatherapp-flatiron.herokuapp.com/assistant/create', { //eslint-disable-line
         method: 'POST',
         headers: {
           Authorization: token,

@@ -10,7 +10,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import 'semantic-ui-less/semantic.less'
 const middleware = compose(
-  applyMiddleware(thunk.withExtraArgument('http://192.168.0.27:3000')),
+  applyMiddleware(thunk.withExtraArgument('https://gatherapp-flatiron.herokuapp.com')),
+  // applyMiddleware(thunk.withExtraArgument('http://192.168.0.27:3000'))
   // (window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() : (f => f))
 )
 

@@ -37,7 +37,7 @@ export const addCreateUserErrors = (errors) => ({
 
 export const createNewUser = (user) => async function (dispatch, getState, api) {
   try {
-    const service = new UserService(`${api}/user`)
+    const service = new UserService(`${api}`)
     const authProps = await service.createUser(user)
     window.localStorage.setItem('authProps', JSON.stringify(authProps))
     dispatch(addAuthProps(authProps))
