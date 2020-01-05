@@ -13,7 +13,8 @@ export class DesktopDashboardContainer extends Component {
             <Card
               fluid
               color={event.creatorId === this.props.userId ? 'yellow' : 'red'}
-              as={Link} to={event.to} key={`card-${event.header}`} header={event.header} description={event.description} />)}
+              as={Link} to={event.to} key={`card-${event.header}`} header={event.header} description={event.description} 
+              meta={event.meta} />)}
         </Transition.Group>
       </DesktopMenuContainer>
     )

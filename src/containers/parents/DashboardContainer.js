@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom'
 import { Widget, addResponseMessage, toggleWidget } from 'react-chat-widget'
 import MyContactsModal from '../modals/MyContactsModal'
 import NewEventModal from '../modals/NewEventModal'
-
+import { subscribeUser } from '../../subscription'
 class DashboardContainer extends React.Component {
   state = {
     title: '',
@@ -86,7 +86,10 @@ class DashboardContainer extends React.Component {
   }
 
   componentDidMount = () => {
-    if (!this.props.user) this.props.showUser()
+    if (!this.props.user) { 
+      this.props.showUser()
+      if (navigator.serviceWorker) subscribeUser(this.props.userId)
+    }
     this.props.fetchEventsFor()
   }
 

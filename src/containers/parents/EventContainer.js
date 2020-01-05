@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import MyContactsModal from '../modals/MyContactsModal'
 import NewEventModal from '../modals/NewEventModal'
 import { showUser } from '../../redux/UserActions'
+import { subscribeUser } from '../../subscription'
 
 class EventContainer extends React.Component {
   state = {
@@ -35,7 +36,10 @@ class EventContainer extends React.Component {
   }
 
   componentDidMount = () => {
-    if (!this.props.user) this.props.showUser()
+    if (!this.props.user) {
+      this.props.showUser()
+      if (navigator.serviceWorker) subscribeUser(this.props.userId)
+    }
     const { getEvents, userId, token } = this.props
     getEvents(userId, token) // eslint-disable-next-line
   }
