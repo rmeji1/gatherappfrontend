@@ -15,7 +15,7 @@ Checkout repos for [Gather App Backend RoR](https://github.com/rmeji1/gatherappb
 * [YELP Fusion API](https://www.yelp.com/fusion)
 * [IBM Watson Assitant](https://www.ibm.com/cloud/watson-assistant/)
 #### Link to Related Repos
-* [Gather App Frontend React](https://github.com/rmeji1/gatherappfrontend)
+* [Gather App Backend RoR](https://github.com/rmeji1/gatherappbackend)
 
 ## Installation
 First clone down the repo and run the following commands to run site locally. 
